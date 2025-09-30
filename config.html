@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Configurações - Aurea</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="visu.css">
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <span class="logo"><img src="./imgas/logo.png" style="width: 60px; padding-top: 5px;" alt="logo"></span>
+            <span style="font-family: Tanmeringue, sans-serif; font-size: 30px; color: #6e1fff;">Aurea</span>
+        </div>
+        <div class="navbar-right">
+            <button onclick="showSection('perfil')"><i class="fa-solid fa-user icon-btn"></i></button>
+            <button id="notif-btn"><i class="fa-solid fa-bell icon-btn"></i></button>
+        </div>
+    </nav>
+
+    <!-- notificações pop -->
+    <div id="notif-pop" class="notif-pop" style="display:none;">
+        <h3>Notificações</h3>
+        <ul>
+            <li>Nova mensagem no grupo de Estudos</li>
+            <li>Você foi adicionado a um mapa mental</li>
+        </ul>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <button onclick="showSection('perfil')">👤 Perfil e conta</button>
+        <button onclick="showSection('aparencia')">🎨 Aparência</button>
+        <button onclick="showSection('notificacao')">🔔 Notificação</button>
+        <button onclick="showSection('dispositivos')">💻 Dispositivos</button>
+        <button onclick="showSection('acessibilidade')">♿ Acessibilidade</button>
+        <button onclick="logout()">🚪 Sair</button>
+
+        <div style="position: fixed; bottom: 0; width: 180px;">
+            <center>
+                <button onclick="location.href='home.html'"><i class="fa-solid fa-house icon-btn"
+                        style="font-size:20px;"></i></button>
+            </center>
+        </div>
+    </div>
+
+
+    <div class="main">
+        <h1>AINDA EM CONSTRUÇÃO</h1><br>
+        <!-- Perfil -->
+        <div id="perfil" class="section">
+            <h2>Informações da conta</h2>
+            <fieldset class="card">
+                <div class="card">
+                    <p><b>Nome de usuário:</b> Ana Baduza</p>
+                    <button class="card" style="color: #6e1fff;">alterar</button>
+                </div>
+                <div class="card">
+                    <p><b>Nome exibido:</b> Ana</p>
+                    <button class="card" style="color: #6e1fff;">alterar</button>
+                </div>
+                <div class="card">
+                    <p><b>Email:</b> exemplo@email.com</p>
+                </div>
+            </fieldset>
+            <br>
+            <h2>Segurança e Senhas</h2>
+            <fieldset class="card">
+                <div class="card"><button onclick="location.href='tapa_buraco.html'">Alterar senha</button></div>
+                <div class="card">
+                    <p><b>Chave de verificação:</b> <i> Nenhuma definida</i></p>
+                </div>
+                <br>
+                <div class="card"><button onclick="location.href='tapa_buraco.html'">Desativar conta</button></div>
+                <button class="card" onclick="location.href='tapa_buraco.html'"><b style="color: red;">Apagar
+                        conta</b></button>
+
+            </fieldset>
+        </div>
+
+        <!-- Aparência -->
+        <div id="aparencia" class="section" style="display:none;">
+            <h2>Aparência</h2>
+            <div class="card">
+                <p>Personalize como o sistema aparece para você.</p>
+                <button onclick="toggleTheme()">Alternar Tema</button>
+            </div>
+        </div>
+
+        <!-- Notificação -->
+        <div id="notificacao" class="section" style="display:none;">
+            <h2>Notificações</h2>
+            <div class="card">
+                <label><input type="checkbox" checked> Ativar notificações por email</label><br>
+                <label><input type="checkbox"> Ativar notificações no app</label>
+            </div>
+        </div>
+
+        <!-- Dispositivos -->
+        <div id="dispositivos" class="section" style="display:none;">
+            <h2>Dispositivos conectados</h2>
+            <div class="card">
+                <ul>
+                    <li>Chrome - Windows</li>
+                    <li>Safari - iPhone</li>
+                </ul>
+                <button onclick="location.href='tapa_buraco.html'">Gerenciar dispositivos</button>
+            </div>
+        </div>
+
+        <!-- Acessibilidade -->
+        <div id="acessibilidade" class="section" style="display:none;">
+            <h2>Acessibilidade</h2>
+            <div class="card">
+                <label><input type="checkbox"> Alto contraste</label><br>
+                <label><input type="checkbox"> Texto maior</label><br>
+                <button onclick="location.href='tapa_buraco.html'">Mais opções</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(sec => sec.style.display = 'none');
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        function logout() {
+            if (confirm("Deseja sair da conta?")) {
+                window.location.href = "tapa_buraco.html";
+            }
+        }
+    </script>
+    <script src="scripiti.js"></script>
+</body>
+
+</html>

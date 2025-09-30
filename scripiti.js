@@ -1,148 +1,133 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const el = id => document.getElementById(id);
 
-    const grupEl = document.getElementById('grup');
-    const button = document.getElementById('add');
-    const popElement = document.getElementById('pop');
-    const textInput = document.getElementById('novo_grupo');
-    const addNovoBtn = document.getElementById('add_novo');
-    const taskTable = document.getElementById('task-table');
-    const mapasEl = document.getElementById('mapas');
-    const buttonMapas = document.getElementById('add-mapas');
-    const popMapas = document.getElementById('pop-mapas');
-    const textMapa = document.getElementById('novo_mapa');
-    const addMapaBtn = document.getElementById('add_novo_mapa');
-    const mapaTable = document.getElementById('mapa-table');
+    // ---- GRUPOS ----
+    const grupEl = el('grup');
+    const addBtn = el('add');
+    const popGroup = el('pop');
+    const novoGrupo = el('novo_grupo');
+    const addNovoBtn = el('add_novo');
+    const taskTable = el('task-table');
 
-    // abrir grupos
-    window.displaygrupo = function () {
-        if (getComputedStyle(grupEl).display === 'none') {
-            grupEl.style.display = 'block';
-        } else {
-            grupEl.style.display = 'none';
-        }
-    };
+    if (grupEl && addBtn && popGroup && novoGrupo && addNovoBtn && taskTable) {
+        window.displaygrupo = () => grupEl.style.display = (getComputedStyle(grupEl).display === 'none') ? 'block' : 'none';
 
-    // abrir/fechar o input
-    button.addEventListener('click', function () {
-        if (getComputedStyle(popElement).display === 'none') {
-            popElement.style.display = 'block';
-            button.textContent = 'fechar';
-            textInput.focus();
-        } else {
-            popElement.style.display = 'none';
-            button.textContent = '+';
-        }
-    });
+        addBtn.addEventListener('click', () => {
+            const hidden = getComputedStyle(popGroup).display === 'none';
+            popGroup.style.display = hidden ? 'block' : 'none';
+            addBtn.textContent = hidden ? 'fechar' : '+';
+            if (hidden) novoGrupo.focus();
+        });
 
-    // adicionar novo grupo à lista
-    addNovoBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        const nomeGrupo = textInput.value.trim();
-        if (!nomeGrupo) {
-            alert('Digite um nome para o grupo!');
-            textInput.focus();
-            return;
-        }
-
-        const li = document.createElement('li');
-        li.textContent = nomeGrupo;
-        taskTable.appendChild(li);
-
-        // limpar input e fechar pop
-        textInput.value = '';
-        popElement.style.display = 'none';
-        button.textContent = '+';
-    });
-
-    // função para abrir/fechar a seção "Mapas Mentais"
-    window.displaymapas = function () {
-        if (getComputedStyle(mapasEl).display === 'none') {
-            mapasEl.style.display = 'block';
-        } else {
-            mapasEl.style.display = 'none';
-        }
-    };
-
-    // botão + para abrir/fechar pop-mapas
-    buttonMapas.addEventListener('click', function () {
-        if (getComputedStyle(popMapas).display === 'none') {
-            popMapas.style.display = 'block';
-            buttonMapas.textContent = 'fechar';
-            textMapa.focus();
-        } else {
-            popMapas.style.display = 'none';
-            buttonMapas.textContent = '+';
-        }
-    });
-
-    // botão criar → adicionar mapa mental na lista
-    addMapaBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        const nomeMapa = textMapa.value.trim();
-        if (!nomeMapa) {
-            alert('Digite um nome para o mapa mental!');
-            textMapa.focus();
-            return;
-        }
-
-        const li = document.createElement('li');
-        li.textContent = nomeMapa;
-        mapaTable.appendChild(li);
-
-        // limpar input e fechar pop
-        textMapa.value = '';
-        popMapas.style.display = 'none';
-        buttonMapas.textContent = '+';
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    const notifBtn = document.getElementById('notif-btn');
-    const notifPop = document.getElementById('notif-pop');
-
-    notifBtn.addEventListener('click', function () {
-        if (getComputedStyle(notifPop).display === 'none') {
-            notifPop.style.display = 'block';
-        } else {
-            notifPop.style.display = 'none';
-        }
-    });
-
-    // fecha notif se clicar fora
-    document.addEventListener('click', function (e) {
-        if (!notifPop.contains(e.target) && e.target !== notifBtn) {
-            notifPop.style.display = 'none';
-        }
-    });
-    function showSection(sectionId) {
-        const sections = document.querySelectorAll('.section');
-        sections.forEach(sec => sec.style.display = 'none'); // esconde todas
-        document.getElementById(sectionId).style.display = 'block'; // mostra a clicada
+        addNovoBtn.addEventListener('click', e => {
+            e.preventDefault();
+            const v = novoGrupo.value.trim();
+            if (!v) { alert('Digite um nome para o grupo!'); novoGrupo.focus(); return; }
+            taskTable.insertAdjacentHTML('beforeend', `<li>${v}</li>`);
+            novoGrupo.value = '';
+            popGroup.style.display = 'none';
+            addBtn.textContent = '+';
+        });
     }
+
+    // ---- MAPAS ----
+    const mapasEl = el('mapas');
+    const addMapBtn = el('add-mapas');
+    const popMapas = el('pop-mapas');
+    const novoMapa = el('novo_mapa');
+    const addNovoMapa = el('add_novo_mapa');
+    const mapaTable = el('mapa-table');
+
+    if (mapasEl && addMapBtn && popMapas && novoMapa && addNovoMapa && mapaTable) {
+        window.displaymapas = () => mapasEl.style.display = (getComputedStyle(mapasEl).display === 'none') ? 'block' : 'none';
+
+        addMapBtn.addEventListener('click', () => {
+            const hidden = getComputedStyle(popMapas).display === 'none';
+            popMapas.style.display = hidden ? 'block' : 'none';
+            addMapBtn.textContent = hidden ? 'fechar' : '+';
+            if (hidden) novoMapa.focus();
+        });
+
+        addNovoMapa.addEventListener('click', e => {
+            e.preventDefault();
+            const v = novoMapa.value.trim();
+            if (!v) { alert('Digite um nome para o mapa mental!'); novoMapa.focus(); return; }
+            mapaTable.insertAdjacentHTML('beforeend', `<li>${v}</li>`);
+            novoMapa.value = '';
+            popMapas.style.display = 'none';
+            addMapBtn.textContent = '+';
+        });
+    }
+
+    // ---- NOTIF ----
+    const notifBtn = el('notif-btn');
+    const notifPop = el('notif-pop');
+    if (notifBtn && notifPop) {
+        notifBtn.addEventListener('click', () => {
+            notifPop.style.display = (getComputedStyle(notifPop).display === 'none') ? 'block' : 'none';
+        });
+        document.addEventListener('click', e => {
+            if (!notifPop.contains(e.target) && e.target !== notifBtn) notifPop.style.display = 'none';
+        });
+    }
+
+    // ---- SEÇÕES CONFIG ----
+    window.showSection = id => {
+        document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+        const target = el(id);
+        if (target) target.style.display = 'block';
+    };
 
     function logout() {
         if (confirm("Deseja sair da conta?")) {
+            localStorage.removeItem("logado");
+            localStorage.removeItem("usuario");
             window.location.href = "login.html";
         }
     }
 
-});
+    // ---- TEMA ----
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    atualizarTemaAtual();
 
-document.addEventListener("DOMContentLoaded", () => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme === "dark" || savedTheme === "light") {
-        document.documentElement.setAttribute("data-theme", savedTheme);
-    } else {
-        // define como claro se não tiver nada salvo
-        document.documentElement.setAttribute("data-theme", "light");
+    // ---- ACESSIBILIDADE ----
+    const chkContraste = el('chk-contraste');
+    const chkTexto = el('chk-texto');
+
+    // inicializa a partir do localStorage
+    const savedContrast = localStorage.getItem('altoContraste') === '1';
+    const savedTexto = localStorage.getItem('textoMaior') === '1';
+
+    if (chkContraste) {
+        chkContraste.checked = savedContrast;
+        document.body.classList.toggle('alto-contraste', savedContrast);
+        chkContraste.addEventListener('change', () => {
+            document.body.classList.toggle('alto-contraste', chkContraste.checked);
+            localStorage.setItem('altoContraste', chkContraste.checked ? '1' : '0');
+        });
     }
-});
 
-// Alterna o tema e salva
-function toggleTheme() {
-    const current = document.documentElement.getAttribute("data-theme");
-    const newTheme = current === "light" ? "dark" : "light";
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
+    if (chkTexto) {
+        chkTexto.checked = savedTexto;
+        document.body.classList.toggle('texto-maior', savedTexto);
+        chkTexto.addEventListener('change', () => {
+            document.body.classList.toggle('texto-maior', chkTexto.checked);
+            localStorage.setItem('textoMaior', chkTexto.checked ? '1' : '0');
+        });
+    }
+}); // fim DOMContentLoaded
+
+// ---- funções globais ----
+function atualizarTemaAtual() {
+    const tema = document.documentElement.getAttribute('data-theme');
+    const span = document.getElementById('tema-atual');
+    if (span) span.textContent = (tema === 'dark') ? 'Escuro 🌙' : 'Claro ☀️';
 }
-
+function toggleTheme() {
+    const html = document.documentElement;
+    const novo = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', novo);
+    localStorage.setItem('theme', novo);
+    atualizarTemaAtual();
+}

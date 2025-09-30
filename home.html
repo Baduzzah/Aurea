@@ -35,8 +35,7 @@
     <div class="sidebar">
         <center>
             <fieldset>
-                <button onclick="displaygrupo()" style="width:188px;position:relative; top: -15px;">Grupos de
-                    Estudos</button>
+                <button onclick="displaygrupo()" style="width:188px;position:relative; top: -15px;">Grupos de Estudos</button>
                 <div id="grup" style="display: none;">
                     <div>
                         <ul id="task-table"></ul>
@@ -50,8 +49,7 @@
             </fieldset>
             <br><br>
             <fieldset>
-                <button style="width:188px;position:relative; top: -15px;" onclick="displaymapas()">Mapas
-                    Mentais</button>
+                <button style="width:188px;position:relative; top: -15px;" onclick="displaymapas()">Mapas Mentais</button>
                 <div id="mapas" style="display: none;">
                     <div>
                         <ul id="mapa-table"></ul>
@@ -65,14 +63,13 @@
             </fieldset>
 
             <div style="position: fixed; bottom: 0;">
-                <button onclick="location.href='config.html'"><i class="fa-solid fa-gear icon-btn"
-                        style="font-size: 24px;"></i></button>
+                <button onclick="location.href='config.html'"><i class="fa-solid fa-gear icon-btn" style="font-size: 24px;"></i></button>
                 <button class="theme-toggle" onclick="toggleTheme()">Alternar Tema</button>
             </div>
         </center>
     </div>
 
-     <div class="main">
+    <div class="main">
         <h1>Bem-vindo ao Aurea!</h1>
         <p>Seu facilitador de vida universitária</p>
         <br>
@@ -83,15 +80,21 @@
             <div class='card' onclick="location.href='https://www.canva.com'">Mapa Mental</div>
             <div class='card' onclick="location.href='tapa_buraco.html'">Faltas</div>
         </div>
+        <br>
+        <div class="dashboard-card">
+            <div class="card-header">
+                <div class="card-title">Calendário</div>
+                <div class="calendar-nav">
+                    <button id="prev-month"><i class="fa-solid fa-chevron-left"></i></button>
+                    <span id="month-year"></span>
+                    <button id="next-month"><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="calendar" id="calendar"></div>
+        </div>
     </div>
 
     <script src="scripiti.js"></script>
 </body>
-
-<script>
-    if (localStorage.getItem("logado") !== "1") {
-        window.location.href = "login.html";
-    }
-</script>
 
 </html>

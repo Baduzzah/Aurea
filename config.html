@@ -38,12 +38,13 @@
         <button onclick="showSection('notificacao')">🔔 Notificação</button>
         <button onclick="showSection('dispositivos')">💻 Dispositivos</button>
         <button onclick="showSection('acessibilidade')">♿ Acessibilidade</button>
-        <button onclick="logout()">🚪 Sair</button>
+        <a href="login.html"><button>🚪 Sair</button></a>
 
         <div style="position: fixed; bottom: 0; width: 180px;">
             <center>
                 <button onclick="location.href='home.html'"><i class="fa-solid fa-house icon-btn"
                         style="font-size:20px;"></i></button>
+                <button class="theme-toggle" onclick="toggleTheme()">Alternar Tema</button>
             </center>
         </div>
     </div>
@@ -56,26 +57,33 @@
             <h2>Informações da conta</h2>
             <fieldset class="card">
                 <div class="card">
-                    <p><b>Nome de usuário:</b> Ana Baduza</p>
-                    <button class="card" style="color: #6e1fff;">alterar</button>
+                    <p><b>Nome de usuário:</b> Ana Baduza <button
+                            style="background-color: var(--buta); color: var(--text);">alterar</button></p>
+
                 </div>
                 <div class="card">
-                    <p><b>Nome exibido:</b> Ana</p>
-                    <button class="card" style="color: #6e1fff;">alterar</button>
+                    <p><b>Nome exibido:</b> Ana <button
+                            style="background-color: var(--buta); color: var(--text);">alterar</button></p>
+
                 </div>
                 <div class="card">
                     <p><b>Email:</b> exemplo@email.com</p>
+                </div>
+                <div class="card">
+                    <p><b>Telefone:</b> +5511999999999</p>
                 </div>
             </fieldset>
             <br>
             <h2>Segurança e Senhas</h2>
             <fieldset class="card">
-                <div class="card"><button onclick="location.href='tapa_buraco.html'">Alterar senha</button></div>
+                <div class="card"><button style="background:none; color: var(--text);"
+                        onclick="location.href='tapa_buraco.html'">Alterar senha</button></div>
                 <div class="card">
                     <p><b>Chave de verificação:</b> <i> Nenhuma definida</i></p>
                 </div>
                 <br>
-                <div class="card"><button onclick="location.href='tapa_buraco.html'">Desativar conta</button></div>
+                <div class="card"><button style="background:none; color: var(--text);"
+                        onclick="location.href='tapa_buraco.html'">Desativar conta</button></div>
                 <button class="card" onclick="location.href='tapa_buraco.html'"><b style="color: red;">Apagar
                         conta</b></button>
 
@@ -87,7 +95,14 @@
             <h2>Aparência</h2>
             <div class="card">
                 <p>Personalize como o sistema aparece para você.</p>
-                <button onclick="toggleTheme()">Alternar Tema</button>
+                <div class="card">
+                    <p>
+                        <b>Tema:</b>
+                        <span id="tema-atual"></span>
+                        <button style="background:none; color: var(--text);" onclick="toggleTheme()">Alternar
+                            Tema</button>
+                    </p>
+                </div>
             </div>
         </div>
 
@@ -95,8 +110,21 @@
         <div id="notificacao" class="section" style="display:none;">
             <h2>Notificações</h2>
             <div class="card">
-                <label><input type="checkbox" checked> Ativar notificações por email</label><br>
-                <label><input type="checkbox"> Ativar notificações no app</label>
+                <label><input type="checkbox"> Ativar notificações por email</label><br>
+                <label><input type="checkbox" checked> Ativar notificações no app</label>
+            </div>
+            <br>
+            <h2>Notificações Prioritarias</h2>
+            <div class="card">
+                <h4><i>Quando ativas, elas permitem que as notificações dos grupos selecionador continuem chegando
+                        (mesmo com as notificações gerais desativadas)</i></h4>
+                <br>
+                <fieldset><label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <div class="card">Grupos priorizados ></div>
+                </fieldset>
             </div>
         </div>
 
@@ -105,10 +133,16 @@
             <h2>Dispositivos conectados</h2>
             <div class="card">
                 <ul>
-                    <li>Chrome - Windows</li>
-                    <li>Safari - iPhone</li>
+                    <li id="disp_1">Chrome - Windows</li>
+                    <label for="disp_1"><i style="font-size: smaller;">Sincronizado</i></label>
+                    <br><br>
+                    <li id="disp_2">Safari - iPhone</li>
+                    <label for="disp_2"><i style="font-size: smaller;">Ultima sessão hoje às 14:37</i></label>
                 </ul>
                 <button onclick="location.href='tapa_buraco.html'">Gerenciar dispositivos</button>
+                <br><br>
+                <div class="card"><button style="background:none; color: var(--text);"> Conectar dispositivos</button>
+                </div>
             </div>
         </div>
 
@@ -116,11 +150,12 @@
         <div id="acessibilidade" class="section" style="display:none;">
             <h2>Acessibilidade</h2>
             <div class="card">
-                <label><input type="checkbox"> Alto contraste</label><br>
-                <label><input type="checkbox"> Texto maior</label><br>
+                <label><input type="checkbox" id="chk-contraste"> Alto contraste</label><br>
+                <label><input type="checkbox" id="chk-texto"> Texto maior</label><br>
                 <button onclick="location.href='tapa_buraco.html'">Mais opções</button>
             </div>
         </div>
+
     </div>
 
     <script>

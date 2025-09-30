@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // ---- NOTIF ----
+    // ---- NOTIFICAÇÕES ----
     const notifBtn = el('notif-btn');
     const notifPop = el('notif-pop');
     if (notifBtn && notifPop) {
@@ -78,13 +78,14 @@ document.addEventListener('DOMContentLoaded', function () {
         if (target) target.style.display = 'block';
     };
 
-    function logout() {
+    // ---- LOGOUT ----
+    window.logout = function () {
         if (confirm("Deseja sair da conta?")) {
             localStorage.removeItem("logado");
             localStorage.removeItem("usuario");
             window.location.href = "login.html";
         }
-    }
+    };
 
     // ---- TEMA ----
     const savedTheme = localStorage.getItem('theme') || 'light';
@@ -95,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const chkContraste = el('chk-contraste');
     const chkTexto = el('chk-texto');
 
-    // inicializa a partir do localStorage
     const savedContrast = localStorage.getItem('altoContraste') === '1';
     const savedTexto = localStorage.getItem('textoMaior') === '1';
 
@@ -116,14 +116,75 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('textoMaior', chkTexto.checked ? '1' : '0');
         });
     }
-}); // fim DOMContentLoaded
 
-// ---- funções globais ----
+    // ---- CALENDÁRIO SIMPLIFICADO COM NAVEGAÇÃO ----
+    const calendarEl = el('calendar');
+    const monthYearEl = el('month-year');
+    const prevBtn = el('prev-month');
+    const nextBtn = el('next-month');
+
+    const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+    const days = ["D", "S", "T", "Q", "Q", "S", "S"];
+    let today = new Date();
+    let currentMonth = today.getMonth();
+    let currentYear = today.getFullYear();
+
+    function renderCalendar(month, year) {
+        if (!calendarEl || !monthYearEl) return;
+        monthYearEl.textContent = `${monthNames[month]} ${year}`;
+        calendarEl.innerHTML = '';
+
+        days.forEach(d => {
+            const headerDay = document.createElement('div');
+            headerDay.textContent = d;
+            calendarEl.appendChild(headerDay);
+        });
+
+        let firstDay = new Date(year, month, 1).getDay();
+        let lastDate = new Date(year, month + 1, 0).getDate();
+
+        for (let i = 0; i < firstDay; i++) {
+            const emptyDiv = document.createElement('div');
+            emptyDiv.classList.add('calendar-day', 'empty');
+            calendarEl.appendChild(emptyDiv);
+        }
+
+        for (let day = 1; day <= lastDate; day++) {
+            const dayDiv = document.createElement('div');
+            dayDiv.classList.add('calendar-day');
+            dayDiv.textContent = day;
+
+            if ([5, 12, 18].includes(day)) dayDiv.classList.add('has-event');
+            if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+                dayDiv.classList.add('current');
+            }
+
+            calendarEl.appendChild(dayDiv);
+        }
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', () => {
+        currentMonth--;
+        if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+        renderCalendar(currentMonth, currentYear);
+    });
+
+    if (nextBtn) nextBtn.addEventListener('click', () => {
+        currentMonth++;
+        if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+        renderCalendar(currentMonth, currentYear);
+    });
+
+    renderCalendar(currentMonth, currentYear);
+});
+
+// ---- FUNÇÕES GLOBAIS ----
 function atualizarTemaAtual() {
     const tema = document.documentElement.getAttribute('data-theme');
     const span = document.getElementById('tema-atual');
-    if (span) span.textContent = (tema === 'dark') ? 'Escuro 🌙' : 'Claro ☀️';
+    if (span) span.textContent = (tema === 'dark') ? 'Escuro ' : 'Claro ';
 }
+
 function toggleTheme() {
     const html = document.documentElement;
     const novo = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';

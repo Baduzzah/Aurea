@@ -1,0 +1,68 @@
+/* Cartões de Notas */
+.nota-card {
+  background: var(--card);
+  color: var(--text);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+.nota-card:hover {
+  transform: translateY(-4px);
+}
+
+.nota-header {
+  font-weight: bold;
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  border-radius: 12px;
+  color: #fff;
+}
+
+.nota-item {
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 6px 12px;
+  margin: 4px 0;
+}
+
+/* Cartões de Trabalhos */
+.trabalho-card {
+  background: var(--card);
+  color: var(--text);
+  border-radius: 16px;
+  padding: 12px 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.trabalho-icone {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #fff;
+  margin-right: 10px;
+}
+
+.trabalho-nome {
+  font-weight: 600;
+}
+
+.trabalho-data {
+  font-size: 14px;
+  color: var(--text);
+}
+
+/* Resumo lateral */
+.resumo-card {
+  background: var(--card);
+  color: var(--text);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  text-align: center;
+}

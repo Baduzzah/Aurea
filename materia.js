@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { nome: "Laboratório de Hardware", total: 60, faltas: 10 },
     { nome: "Engenharia de Software", total: 60, faltas: 12 },
     { nome: "Linguagem de Programação", total: 60, faltas: 30 },
-    { nome: "Contabilidade", total: 0, faltas: 0 }, // mostra em cinza
+    { nome: "Contabilidade", total: 40, faltas: 8 }
   ];
 
   function salvarMaterias() {
@@ -42,33 +42,20 @@ document.addEventListener("DOMContentLoaded", () => {
       const presenca = calcularPresenca(m.total, m.faltas);
       const colorClass = getColorClass(presenca);
       const initials = getInitials(m.nome);
-      const presencaText = presenca === null ? "—" : `${presenca.toFixed(1)}%`;
 
-      const col = document.createElement("div");
-      col.className = "col-12 col-md-6 col-lg-4";
+      const fs = document.createElement("fieldset");
+      fs.className = "materia-fieldset";
 
-      col.innerHTML = `
-        <div class="materia-card-novo">
-          <div class="materia-icone ${colorClass}">${initials}</div>
-          <div class="materia-info-novo">
-            <div class="materia-nome-novo">${m.nome}</div>
-            <div class="materia-presenca">${presencaText}</div>
-          </div>
-          <div class="materia-acoes">
-            <button class="btn btn-sm btn-light me-1 edit-btn" data-index="${i}">
-              <i class="fa-solid fa-pen-to-square"></i> Editar
-            </button>
-            <button class="btn btn-sm btn-outline-danger del-btn" data-index="${i}">
-              <i class="fa-solid fa-trash"></i>
-            </button>
-          </div>
-        </div>
+      fs.innerHTML = `
+        <div class="materia-icone ${colorClass}">${initials}</div>
+        <div class="materia-nome">${m.nome}</div>
       `;
-      grid.appendChild(col);
+
+      grid.appendChild(fs);
     });
   }
 
-  // modal edição
+  // Modal edição
   const editModalEl = document.getElementById("editModal");
   const editModal = new bootstrap.Modal(editModalEl);
   const editForm = document.getElementById("editForm");
@@ -83,27 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
     editTotal.value = "";
     editFaltas.value = "";
     editModal.show();
-  });
-
-  grid.addEventListener("click", (ev) => {
-    const editBtn = ev.target.closest(".edit-btn");
-    const delBtn = ev.target.closest(".del-btn");
-
-    if (editBtn) {
-      const i = Number(editBtn.dataset.index);
-      editIndex.value = i;
-      editNome.value = materias[i].nome;
-      editTotal.value = materias[i].total;
-      editFaltas.value = materias[i].faltas;
-      editModal.show();
-    } else if (delBtn) {
-      const i = Number(delBtn.dataset.index);
-      if (confirm(`Excluir "${materias[i].nome}"?`)) {
-        materias.splice(i, 1);
-        salvarMaterias();
-        renderMaterias();
-      }
-    }
   });
 
   editForm.addEventListener("submit", (e) => {
@@ -124,10 +90,11 @@ document.addEventListener("DOMContentLoaded", () => {
     renderMaterias();
   });
 
-  // pesquisa
+  // Busca
   document.getElementById("search").addEventListener("input", (e) => {
     renderMaterias(e.target.value.trim());
   });
 
+  // Primeira renderização
   renderMaterias();
 });

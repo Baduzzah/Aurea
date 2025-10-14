@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sistema de Estudos - Faltas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="visu.css">
+    <link rel="stylesheet" href="faltas.css">
+
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <span><img src="./imgas/logo.png" style="width: 60px;" alt="📘"></span>
+            <span style="font-family: Tanmeringue, sans-serif; font-size: 30px; color: #6e1fff;">Aurea</span>
+        </div>
+        <div class="navbar-right">
+            <span id="usuario-exibido">Ana</span>
+            <button><a href="config.html" style="color: white;"><i class="fa-solid fa-user icon-btn"
+                        onclick="location.href='config.html'"></i></a></button>
+            <button id="notif-btn"><i class="fa-solid fa-bell icon-btn"></i></button>
+        </div>
+    </nav>
+
+    <!-- notificações pop -->
+    <div id="notif-pop" class="notif-pop" style="display:none;">
+        <h3>Notificações</h3>
+        <ul>
+            <li>Nova mensagem no grupo de Estudos</li>
+            <li>Você foi adicionado a um mapa mental</li>
+        </ul>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <center>
+            <fieldset>
+                <button onclick="displaygrupo()" style="width:188px;position:relative; top: -15px;">Grupos de
+                    Estudos</button>
+                <div id="grup" style="display: none;">
+                    <div>
+                        <ul id="task-table"></ul>
+                    </div>
+                    <button id="add" style="border-radius: 100px;"><b>+</b></button>
+                    <div id="pop" style="display: none;">
+                        <input type="text" id="novo_grupo" placeholder="Nome do Grupo">
+                        <button id="add_novo">criar</button>
+                    </div>
+                </div>
+            </fieldset>
+            <br><br>
+            <fieldset> 
+                <button style="width:188px;position:relative; top: -15px;" onclick="displaymapas()">Mapas
+                    Mentais</button>
+                <div id="mapas" style="display: none;">
+                    <div>
+                        <ul id="mapa-table"></ul>
+                    </div>
+                    <button id="add-mapas" style="border-radius: 100px;">+</button>
+                    <div id="pop-mapas" style="display: none;">
+                        <input type="text" id="novo_mapa" placeholder="Nome do Mapa Mental">
+                        <button id="add_novo_mapa">criar</button>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div style="position: fixed; bottom: 0;">
+                <button onclick="location.href='config.html'"><i class="fa-solid fa-gear"></i></button> <button
+                    onclick="location.href='home.html'"><i class="fa-solid fa-house icon-btn"></i></button> <br> 
+            </div>
+        </center>
+    </div>
+
+    <!--MAIN-->
+
+    <div class="main">
+
+        <div class="container">
+            <div class="title">📚 Controle de Faltas</div>
+
+            <div class="controls">
+                <input type="text" id="search" class="search-input" placeholder="🔍 Pesquisar matéria...">
+                <button id="btnAddMateria" class="btn-add">
+                    <i class="fa-solid fa-plus"></i> Adicionar Matéria
+                </button>
+            </div>
+
+            <div id="materiasGrid" class="materias-grid"></div>
+        </div>
+
+        <div id="modal" class="modal-overlay">
+            <div class="modal-content">
+                <h2 class="modal-title" id="modalTitle">Adicionar Matéria</h2>
+                <form id="materiaForm">
+                    <div class="form-group">
+                        <label class="form-label">Nome da Matéria</label>
+                        <input type="text" id="inputNome" class="form-input" placeholder="Ex: Matemática" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Total de Aulas</label>
+                        <input type="number" id="inputTotal" class="form-input" min="1" placeholder="Ex: 60" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Faltas</label>
+                        <input type="number" id="inputFaltas" class="form-input" min="0" placeholder="Ex: 5" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn-save">
+                            <i class="fa-solid fa-check"></i> Salvar
+                        </button>
+                        <button type="button" class="btn-cancel" onclick="fecharModal()">
+                            <i class="fa-solid fa-times"></i> Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <button class="theme-toggle" onclick="toggleTheme()">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+
+    </div>
+
+ <script src="faltas.js"></script>
+ <script src="scripiti.js"></script>
+</body>
+
+</html>

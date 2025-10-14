@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Matérias</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="materia.css">
+    <link rel="stylesheet" href="visu.css">
+
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <span><img src="./imgas/logo.png" style="width: 60px;" alt="📘"></span>
+            <span style="font-family: Tanmeringue, sans-serif; font-size: 30px; color: #6e1fff;">Aurea</span>
+        </div>
+        <div class="navbar-right">
+            <span id="usuario-exibido">Ana</span>
+            <button><a href="config.html" style="color: white;"><i class="fa-solid fa-user icon-btn"
+                        onclick="location.href='config.html'"></i></a></button>
+            <button id="notif-btn"><i class="fa-solid fa-bell icon-btn"></i></button>
+        </div>
+    </nav>
+
+    <!-- notificações pop -->
+    <div id="notif-pop" class="notif-pop" style="display:none;">
+        <h3>Notificações</h3>
+        <ul>
+            <li>Nova mensagem no grupo de Estudos</li>
+            <li>Você foi adicionado a um mapa mental</li>
+        </ul>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <center>
+            <fieldset>
+                <button onclick="displaygrupo()" style="width:188px;position:relative; top: -15px;">Grupos de
+                    Estudos</button>
+                <div id="grup" style="display: none;">
+                    <div>
+                        <ul id="task-table"></ul>
+                    </div>
+                    <button id="add" style="border-radius: 100px;"><b>+</b></button>
+                    <div id="pop" style="display: none;">
+                        <input type="text" id="novo_grupo" placeholder="Nome do Grupo">
+                        <button id="add_novo">criar</button>
+                    </div>
+                </div>
+            </fieldset>
+            <br><br>
+            <fieldset>
+                <button style="width:188px;position:relative; top: -15px;" onclick="displaymapas()">Mapas
+                    Mentais</button>
+                <div id="mapas" style="display: none;">
+                    <div>
+                        <ul id="mapa-table"></ul>
+                    </div>
+                    <button id="add-mapas" style="border-radius: 100px;">+</button>
+                    <div id="pop-mapas" style="display: none;">
+                        <input type="text" id="novo_mapa" placeholder="Nome do Mapa Mental">
+                        <button id="add_novo_mapa">criar</button>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div style="position: fixed; bottom: 0;">
+                <button onclick="location.href='config.html'"><i class="fa-solid fa-gear"></i></button> <button
+                    onclick="location.href='home.html'"><i class="fa-solid fa-house icon-btn"></i></button> <br>
+            </div>
+        </center>
+    </div>
+
+    <!--MAIN-->
+    <div class="main">
+        <div class="container">
+            <div class="title">📚 Minhas Matérias</div>
+
+            <div class="controls">
+                <input type="text" id="search" class="search-input" placeholder="🔍 Pesquisar matéria...">
+                <button id="btnAddMateria" class="btn-add">
+                    <i class="fa-solid fa-plus"></i> Adicionar Matéria
+                </button>
+            </div>
+
+            <div id="materiasGrid" class="materias-grid"></div>
+        </div>
+
+        <div id="modal" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-title">
+                    <span id="modalTitle">Adicionar Matéria</span>
+                    <button class="btn-close" onclick="fecharModal()">×</button>
+                </div>
+
+                <form id="materiaForm">
+                    <div class="form-group">
+                        <label class="form-label">Nome da Matéria</label>
+                        <input type="text" id="inputNome" class="form-input" placeholder="Ex: Matemática" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Professor(a)</label>
+                        <input type="text" id="inputProfessor" class="form-input" placeholder="Nome do professor">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">E-mail do Professor(a)</label>
+                        <input type="email" id="inputEmail" class="form-input" placeholder="professor@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Telefone de Contato</label>
+                        <input type="tel" id="inputTelefone" class="form-input" placeholder="(11) 98765-4321">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Dias da Semana com Aula</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="dias" value="Segunda">
+                                <span>Seg</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="dias" value="Terça">
+                                <span>Ter</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="dias" value="Quarta">
+                                <span>Qua</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="dias" value="Quinta">
+                                <span>Qui</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="dias" value="Sexta">
+                                <span>Sex</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="dias" value="Sábado">
+                                <span>Sáb</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="editIndex">
+
+                    <div class="modal-actions">
+                        <button type="submit" class="btn-save">
+                            <i class="fa-solid fa-check"></i> Salvar
+                        </button>
+                        <button type="button" class="btn-cancel" onclick="fecharModal()">
+                            <i class="fa-solid fa-times"></i> Cancelar
+                        </button>
+                        <button type="button" class="btn-delete" id="btnDelete" style="display: none;"
+                            onclick="excluirMateria()">
+                            <i class="fa-solid fa-trash"></i> Excluir
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <button class="theme-toggle" onclick="toggleTheme()">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+    </div>
+    <script src="materia.js"></script>
+    <script src="scripiti.js"></script>
+</body>
+
+</html>

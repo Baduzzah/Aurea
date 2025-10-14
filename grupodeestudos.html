@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sistema de Estudos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="visu.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<style>
+    /* Estilos adicionais específicos para esta página */
+    .grupo-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    .grupo-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--accent);
+    }
+
+    .grupo-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .grupo-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--azul), var(--roxo));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .grupo-details h1 {
+        margin-bottom: 5px;
+        color: var(--text);
+    }
+
+    .grupo-details p {
+        color: var(--text);
+        opacity: 0.8;
+    }
+
+    .membros-count {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--buta);
+        padding: 8px 15px;
+        border-radius: 20px;
+        font-weight: 500;
+    }
+
+    .funcionalidades-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+
+    .func-card {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 25px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s, box-shadow 0.3s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        height: 100%;
+    }
+
+    .func-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .func-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        font-size: 28px;
+        color: white;
+    }
+
+    .func-card h3 {
+        margin-bottom: 15px;
+        color: var(--text);
+    }
+
+    .func-card p {
+        margin-bottom: 20px;
+        color: var(--text);
+        opacity: 0.8;
+        flex-grow: 1;
+    }
+
+    .func-btn {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background 0.3s;
+        width: 100%;
+    }
+
+    .func-btn:hover {
+        background: #6a3bb5;
+    }
+
+    .atividades-recentes {
+        background: var(--card);
+        border-radius: var(--radius);
+        padding: 25px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+    }
+
+    .atividades-recentes h2 {
+        margin-bottom: 20px;
+        color: var(--text);
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--buta);
+    }
+
+    .atividade-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid var(--buta);
+    }
+
+    .atividade-item:last-child {
+        border-bottom: none;
+    }
+
+    .atividade-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        color: white;
+        font-size: 18px;
+    }
+
+    .atividade-info {
+        flex-grow: 1;
+    }
+
+    .atividade-info h4 {
+        margin-bottom: 5px;
+        color: var(--text);
+    }
+
+    .atividade-info p {
+        color: var(--text);
+        opacity: 0.7;
+        font-size: 14px;
+    }
+
+    .atividade-tempo {
+        color: var(--text);
+        opacity: 0.6;
+        font-size: 13px;
+    }
+
+    /* Cores para os ícones */
+    .icon-biblioteca {
+        background: var(--azul);
+    }
+
+    .icon-materias {
+        background: var(--roxo);
+    }
+
+    .icon-convidar {
+        background: var(--rosa);
+    }
+
+    .icon-analise {
+        background: #6733e2;
+    }
+
+    .icon-robin {
+        background: #b927e6;
+    }
+
+    @media (max-width: 768px) {
+        .grupo-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .membros-count {
+            align-self: flex-start;
+        }
+    }
+</style>
+
+
+<body>
+
+
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <span><img src="./imgas/logo.png" style="width: 60px;" alt="📘"></span>
+            <span style="font-family: Tanmeringue, sans-serif; font-size: 30px; color: #6e1fff;">Aurea</span>
+        </div>
+        <div class="navbar-right">
+            <span id="usuario-exibido">Ana</span>
+            <button><a href="config.html" style="color: white;"><i class="fa-solid fa-user icon-btn"
+                        onclick="location.href='config.html'"></i></a></button>
+            <button id="notif-btn"><i class="fa-solid fa-bell icon-btn"></i></button>
+        </div>
+    </nav>
+
+    <!-- notificações pop -->
+    <div id="notif-pop" class="notif-pop" style="display:none;">
+        <h3>Notificações</h3>
+        <ul>
+            <li>Nova mensagem no grupo de Estudos</li>
+            <li>Você foi adicionado a um mapa mental</li>
+        </ul>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <center>
+            <fieldset>
+                <button onclick="displaygrupo()" style="width:188px;position:relative; top: -15px;">Grupos de
+                    Estudos</button>
+                <div id="grup" style="display: none;">
+                    <div>
+                        <ul id="task-table"></ul>
+                    </div>
+                    <button id="add" style="border-radius: 100px;"><b>+</b></button>
+                    <div id="pop" style="display: none;">
+                        <input type="text" id="novo_grupo" placeholder="Nome do Grupo">
+                        <button id="add_novo">criar</button>
+                    </div>
+                </div>
+            </fieldset>
+            <br><br>
+            <fieldset> 
+                <button style="width:188px;position:relative; top: -15px;" onclick="displaymapas()">Mapas
+                    Mentais</button>
+                <div id="mapas" style="display: none;">
+                    <div>
+                        <ul id="mapa-table"></ul>
+                    </div>
+                    <button id="add-mapas" style="border-radius: 100px;">+</button>
+                    <div id="pop-mapas" style="display: none;">
+                        <input type="text" id="novo_mapa" placeholder="Nome do Mapa Mental">
+                        <button id="add_novo_mapa">criar</button>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div style="position: fixed; bottom: 0;">
+                <button onclick="location.href='config.html'"><i class="fa-solid fa-gear"></i></button> <button
+                    onclick="location.href='home.html'"><i class="fa-solid fa-house icon-btn"></i></button> <br> 
+            </div>
+        </center>
+    </div>
+
+    <!--MAIN-->
+
+    <div class="main">
+        <div class="grupo-container">
+            <div class="grupo-header">
+                <div class="grupo-info">
+                    <div class="grupo-avatar">GE</div>
+                    <div class="grupo-details">
+                        <h1>Grupo de Estudos Avançados</h1>
+                        <p>Foco em programação, matemática e estatística</p>
+                    </div>
+                </div>
+                <div class="membros-count">
+                    <span>👥</span>
+                    <span>8 membros</span>
+                </div>
+            </div>
+
+
+            <div class="funcionalidades-grid">
+                <div class="func-card">
+                    <div class="func-icon icon-biblioteca">📚</div>
+                    <h3>Biblioteca</h3>
+                    <p>Acesse documentos, livros e materiais compartilhados pelo grupo</p>
+                    <button class="func-btn" onclick="acessarBiblioteca()">Acessar Biblioteca</button>
+                </div>
+
+                <div class="func-card">
+                    <div class="func-icon icon-materias">📖</div>
+                    <h3>Matérias</h3>
+                    <p>Organize e acesse conteúdos por disciplina ou área de estudo</p>
+                    <button class="func-btn" onclick="acessarMaterias()">Ver Matérias</button>
+                </div>
+
+                <div class="func-card">
+                    <div class="func-icon icon-convidar">👥</div>
+                    <h3>Convidar</h3>
+                    <p>Convide novos membros para participar do grupo de estudos</p>
+                    <button class="func-btn" onclick="convidarMembro()">Convidar Pessoas</button>
+                </div>
+
+                <div class="func-card">
+                    <div class="func-icon icon-analise">📊</div>
+                    <h3>Análise de Desempenho</h3>
+                    <p>Acompanhe métricas e progresso individual e do grupo</p>
+                    <button class="func-btn" onclick="verAnalise()">Ver Análise</button>
+                </div>
+
+                <div class="func-card">
+                    <div class="func-icon icon-robin">🔄</div>
+                    <h3>Round Robin</h3>
+                    <p>Sistema de revezamento para apresentações e discussões</p>
+                    <button class="func-btn" onclick="iniciarRoundRobin()">Iniciar Round Robin</button>
+                </div>
+            </div>
+
+            <div class="atividades-recentes">
+                <h2>Atividades Recentes</h2>
+
+                <div class="atividade-item">
+                    <div class="atividade-icon icon-biblioteca">📚</div>
+                    <div class="atividade-info">
+                        <h4>Novo material adicionado</h4>
+                        <p>Maria adicionou "Estatística Aplicada" à biblioteca</p>
+                    </div>
+                    <div class="atividade-tempo">2 horas atrás</div>
+                </div>
+
+                <div class="atividade-item">
+                    <div class="atividade-icon icon-robin">🔄</div>
+                    <div class="atividade-info">
+                        <h4>Round Robin atualizado</h4>
+                        <p>João é o próximo a apresentar no tópico de Algoritmos</p>
+                    </div>
+                    <div class="atividade-tempo">1 dia atrás</div>
+                </div>
+
+                <div class="atividade-item">
+                    <div class="atividade-icon icon-analise">📊</div>
+                    <div class="atividade-info">
+                        <h4>Análise de desempenho</h4>
+                        <p>Relatório semanal de progresso disponível</p>
+                    </div>
+                    <div class="atividade-tempo">3 dias atrás</div>
+                </div>
+
+                <div class="atividade-item">
+                    <div class="atividade-icon icon-convidar">👥</div>
+                    <div class="atividade-info">
+                        <h4>Novo membro</h4>
+                        <p>Ana foi adicionada ao grupo por Pedro</p>
+                    </div>
+                    <div class="atividade-tempo">5 dias atrás</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const sidebarThemeToggle = document.getElementById('sidebarThemeToggle');
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+
+            localStorage.setItem('theme', newTheme);
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+        sidebarThemeToggle.addEventListener('click', toggleTheme);
+
+        // Verificar tema salvo
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+
+        // Funções para os botões
+        function acessarBiblioteca() {
+            alert('Acessando Biblioteca de Documentos...');
+        }
+
+        function acessarMaterias() {
+            alert('Acessando Matérias...');
+        }
+
+        function convidarMembro() {
+            const email = prompt('Digite o e-mail da pessoa que deseja convidar:');
+            if (email) {
+                alert(`Convite enviado para ${email}`);
+            }
+        }
+
+        function verAnalise() {
+            alert('Abrindo Análise de Desempenho...');
+        }
+
+        function iniciarRoundRobin() {
+            alert('Iniciando Round Robin...');
+
+        }
+    </script>
+</body>
+
+</html>

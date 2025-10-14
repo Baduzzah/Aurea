@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mapas Mentais</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="visu.css">
+    <style>
+        :root {
+            --verde: #10b981;
+            --bg-verde: #ecfdf5;
+
+            --laranja: #f59e0b;
+            --bg-laranja: #fffbeb;
+        }
+
+        [data-theme="dark"] {
+            --bg-verde: #1a4d34;
+            --bg-laranja: #824224;
+        }
+
+        .btn-new-materia {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+
+        .btn-new-materia:hover {
+            background: #6a3bb5;
+            transform: translateY(-2px);
+        }
+
+        .materia-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: var(--bg2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .materia-item:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .materia-item.active {
+            background: var(--accent);
+            color: white;
+            font-weight: 600;
+        }
+
+        .materia-name {
+            flex: 1;
+        }
+
+        .btn-delete-materia {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            padding: 4px 8px;
+            opacity: 0.7;
+        }
+
+        .btn-delete-materia:hover {
+            opacity: 1;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .toolbar {
+            background: var(--card);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .materia-title {
+            flex: 1;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .btn-tool {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-add-node {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-add-node:hover {
+            background: #6a3bb5;
+        }
+
+        .btn-clear {
+            background: #fee;
+            color: #dc2626;
+        }
+
+        .btn-export {
+            background: var(--bg2);
+            color: var(--text);
+        }
+
+        .canvas-container {
+            flex: 1;
+            background: var(--card);
+            border-radius: 10px;
+            position: relative;
+            overflow: auto;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .canvas {
+            margin-left: 240px;
+            padding: 40px;
+            flex-grow: 1;
+            height: 100%;
+            min-width: 300px;
+            min-height: 1000px;
+            position: relative;
+        }
+
+        .node {
+            position: absolute;
+            padding: 15px 20px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            cursor: move;
+            user-select: none;
+            min-width: 150px;
+            border: 3px solid;
+            transition: transform 0.2s;
+        }
+
+        .node:hover {
+            transform: scale(1.05);
+            z-index: 100;
+        }
+
+        .node.dragging {
+            opacity: 0.8;
+            z-index: 1000;
+        }
+
+        .node-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .node-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: inherit;
+        }
+
+        .node-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-node {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            opacity: 0.6;
+            color: inherit;
+        }
+
+        .btn-node:hover {
+            opacity: 1;
+        }
+
+        .node-content {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.7);
+            margin-bottom: 8px;
+        }
+
+        .node-children {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .child-tag {
+            padding: 4px 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        /* Nodes com cores adaptáveis ao tema */
+        .color-conceito {
+            border-color: var(--roxo);
+            background: var(--bg-roxo);
+            color: var(--text);
+        }
+
+        .color-exemplo {
+            border-color: var(--azul);
+            background: var(--bg-azul);
+            color: var(--text);
+        }
+
+        .color-formula {
+            border-color: var(--rosa);
+            background: var(--bg-rosa);
+            color: var(--text);
+        }
+
+        .color-dica {
+            border-color: var(--verde);
+            background: var(--bg-verde);
+            color: var(--text);
+        }
+
+        .color-importante {
+            border-color: var(--laranja);
+            background: var(--bg-laranja);
+            color: var(--text);
+        }
+
+
+        .connection-line {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid var(--buta);
+            border-radius: 8px;
+            background: var(--bg2);
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .color-option:hover,
+        .color-option.selected {
+            border-color: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-save,
+        .btn-cancel {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .btn-save {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-cancel {
+            background: var(--buta);
+            color: var(--text);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            z-index: 1500;
+        }
+
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text);
+            opacity: 0.5;
+        }
+
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <span><img src="./imgas/logo.png" style="width: 60px;" alt="📘"></span>
+            <span style="font-family: Tanmeringue, sans-serif; font-size: 30px; color: #6e1fff;">Aurea</span>
+        </div>
+        <div class="navbar-right">
+            <span id="usuario-exibido">Ana</span>
+            <button><a href="config.html" style="color: white;"><i class="fa-solid fa-user icon-btn"
+                        onclick="location.href='config.html'"></i></a></button>
+            <button id="notif-btn"><i class="fa-solid fa-bell icon-btn"></i></button>
+        </div>
+    </nav>
+
+    <!-- notificações pop -->
+    <div id="notif-pop" class="notif-pop" style="display:none;">
+        <h3>Notificações</h3>
+        <ul>
+            <li>Nova mensagem no grupo de Estudos</li>
+            <li>Você foi adicionado a um mapa mental</li>
+        </ul>
+    </div>
+
+    <!--sidebar especial-->
+    <div class="sidebar">
+        <div class="sidebar-title">Minhas Matérias</div>
+        <button class="btn-new-materia" onclick="novaMateriaModal()">
+            <i class="fa-solid fa-plus"></i> Nova Matéria
+        </button>
+        <div id="materiasList"></div>
+
+        <div style="position: fixed; bottom: 0;">
+            <button onclick="location.href='config.html'"><i class="fa-solid fa-gear"></i></button> <button
+                onclick="location.href='home.html'"><i class="fa-solid fa-house icon-btn"></i></button> <br>
+        </div>
+    </div>
+
+    <!--main-->
+    <div class="main">
+        <div class="main-content">
+            <div class="toolbar">
+                <div class="materia-title" id="currentMateriaTitle">Selecione uma matéria</div>
+                <button class="btn-tool btn-add-node" onclick="novoNoModal()">
+                    <i class="fa-solid fa-plus"></i> Novo Tópico
+                </button>
+                <button class="btn-tool btn-export" onclick="exportarImagem()">
+                    <i class="fa-solid fa-download"></i> Exportar
+                </button>
+                <button class="btn-tool btn-clear" onclick="limparMapa()">
+                    <i class="fa-solid fa-trash"></i> Limpar
+                </button>
+            </div>
+
+            <div class="canvas-container">
+                <svg id="connectionsSvg"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></svg>
+                <div id="canvas" class="canvas"></div>
+            </div>
+        </div>
+
+        <div id="modalMateria" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-title">Nova Matéria</div>
+                <form id="formMateria">
+                    <div class="form-group">
+                        <label class="form-label">Nome da Matéria</label>
+                        <input type="text" id="inputMateriaNome" class="form-input" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="submit" class="btn-save">Criar</button>
+                        <button type="button" class="btn-cancel" onclick="fecharModal('modalMateria')">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="modalNo" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-title" id="modalNoTitle">Novo Tópico</div>
+                <form id="formNo">
+                    <div class="form-group">
+                        <label class="form-label">Título do Tópico</label>
+                        <input type="text" id="inputNoTitulo" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Conteúdo/Descrição</label>
+                        <textarea id="inputNoConteudo" class="form-textarea"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Tipo/Cor</label>
+                        <div class="color-options">
+                            <div class="color-option color-conceito selected" data-color="conceito"
+                                onclick="selecionarCor(this)"></div>
+                            <div class="color-option color-exemplo" data-color="exemplo" onclick="selecionarCor(this)">
+                            </div>
+                            <div class="color-option color-formula" data-color="formula" onclick="selecionarCor(this)">
+                            </div>
+                            <div class="color-option color-dica" data-color="dica" onclick="selecionarCor(this)"></div>
+                            <div class="color-option color-importante" data-color="importante"
+                                onclick="selecionarCor(this)"></div>
+                        </div>
+                        <small style="opacity: 0.7;">Roxo: Conceito | Azul: Exemplo | Rosa: Fórmula | Verde: Dica |
+                            Laranja:
+                            Importante</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Conectar a um tópico (opcional)</label>
+                        <select id="inputNoPai" class="form-select">
+                            <option value="">Nenhum (tópico principal)</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="inputNoId">
+                    <div class="modal-actions">
+                        <button type="submit" class="btn-save">Salvar</button>
+                        <button type="button" class="btn-cancel" onclick="fecharModal('modalNo')">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <button class="theme-toggle" onclick="toggleTheme()">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+
+    </div>
+
+    <script>
+        let materias = JSON.parse(localStorage.getItem('mapasMentais')) || [];
+        let materiaAtual = null;
+        let corSelecionada = 'conceito';
+        let draggingNode = null;
+        let offsetX = 0, offsetY = 0;
+
+        function salvar() {
+            localStorage.setItem('mapasMentais', JSON.stringify(materias));
+        }
+
+        function renderMaterias() {
+            const lista = document.getElementById('materiasList');
+            lista.innerHTML = materias.map((m, i) => `
+        <div class="materia-item ${materiaAtual === i ? 'active' : ''}" onclick="selecionarMateria(${i})">
+            <span class="materia-name">${m.nome}</span>
+            <button class="btn-delete-materia" onclick="event.stopPropagation(); excluirMateria(${i})">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </div>
+    `).join('');
+        }
+
+        function novaMateriaModal() {
+            document.getElementById('inputMateriaNome').value = '';
+            document.getElementById('modalMateria').classList.add('show');
+        }
+
+        function selecionarMateria(index) {
+            materiaAtual = index;
+            document.getElementById('currentMateriaTitle').textContent = materias[index].nome;
+            renderMaterias();
+            renderCanvas();
+        }
+
+        function excluirMateria(index) {
+            if (!confirm(`Excluir a matéria "${materias[index].nome}" e todo seu conteúdo?`)) return;
+
+            materias.splice(index, 1);
+            if (materiaAtual === index) {
+                materiaAtual = null;
+                document.getElementById('currentMateriaTitle').textContent = 'Selecione uma matéria';
+                document.getElementById('canvas').innerHTML = '';
+                document.getElementById('connectionsSvg').innerHTML = '';
+            }
+            salvar();
+            renderMaterias();
+        }
+
+        function novoNoModal() {
+            if (materiaAtual === null) { alert('Selecione uma matéria primeiro!'); return; }
+
+            document.getElementById('modalNoTitle').textContent = 'Novo Tópico';
+            document.getElementById('inputNoTitulo').value = '';
+            document.getElementById('inputNoConteudo').value = '';
+            document.getElementById('inputNoId').value = '';
+            corSelecionada = 'conceito';
+
+            const selectPai = document.getElementById('inputNoPai');
+            const nos = materias[materiaAtual].nos || [];
+            selectPai.innerHTML = '<option value="">Nenhum (tópico principal)</option>' +
+                nos.map(n => `<option value="${n.id}">${n.titulo}</option>`).join('');
+
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.toggle('selected', opt.dataset.color === 'conceito'));
+            document.getElementById('modalNo').classList.add('show');
+        }
+
+        function editarNo(id) {
+            const no = materias[materiaAtual].nos.find(n => n.id === id);
+            if (!no) return;
+
+            document.getElementById('modalNoTitle').textContent = 'Editar Tópico';
+            document.getElementById('inputNoTitulo').value = no.titulo;
+            document.getElementById('inputNoConteudo').value = no.conteudo || '';
+            document.getElementById('inputNoId').value = no.id;
+            corSelecionada = no.cor;
+
+            const selectPai = document.getElementById('inputNoPai');
+            const nos = materias[materiaAtual].nos.filter(n => n.id !== id);
+            selectPai.innerHTML = '<option value="">Nenhum (tópico principal)</option>' +
+                nos.map(n => `<option value="${n.id}" ${n.id === no.paiId ? 'selected' : ''}>${n.titulo}</option>`).join('');
+
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.toggle('selected', opt.dataset.color === no.cor));
+            document.getElementById('modalNo').classList.add('show');
+        }
+
+        function excluirNo(id) {
+            if (!confirm('Excluir este tópico e suas conexões?')) return;
+
+            materias[materiaAtual].nos = materias[materiaAtual].nos.filter(n => n.id !== id && n.paiId !== id);
+            salvar();
+            renderCanvas();
+        }
+
+        function selecionarCor(element) {
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            element.classList.add('selected');
+            corSelecionada = element.dataset.color;
+        }
+
+        function fecharModal(id) {
+            document.getElementById(id).classList.remove('show');
+        }
+
+        function renderCanvas() {
+            const canvas = document.getElementById('canvas');
+            const svg = document.getElementById('connectionsSvg');
+
+            if (materiaAtual === null) {
+                canvas.innerHTML = `<div class="empty-state"><i class="fa-solid fa-diagram-project"></i><p>Selecione uma matéria para criar seu mapa mental</p></div>`;
+                svg.innerHTML = '';
+                return;
+            }
+
+            const nos = materias[materiaAtual].nos || [];
+
+            if (nos.length === 0) {
+                canvas.innerHTML = `<div class="empty-state"><i class="fa-solid fa-lightbulb"></i><p>Clique em "Novo Tópico" para começar</p></div>`;
+                svg.innerHTML = '';
+                return;
+            }
+
+            canvas.innerHTML = nos.map(no => {
+                const filhos = nos.filter(n => n.paiId === no.id);
+                return `
+                <div class="node color-${no.cor}" 
+                    id="node-${no.id}" 
+                    style="left:${no.x}px; top:${no.y}px;"
+                    onmousedown="iniciarDrag(event,'${no.id}')">
+
+
+                <div class="node-header">
+                    <div class="node-title">${no.titulo}</div>
+                    <div class="node-actions">
+                        <button class="btn-node" onclick="event.stopPropagation(); editarNo('${no.id}')"><i class="fa-solid fa-pen"></i></button>
+                        <button class="btn-node" onclick="event.stopPropagation(); excluirNo('${no.id}')"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </div>
+                ${no.conteudo ? `<div class="node-content">${no.conteudo}</div>` : ''}
+                ${filhos.length > 0 ? `<div class="node-children">${filhos.map(f => `<span class="child-tag">${f.titulo}</span>`).join('')}</div>` : ''}
+            </div>
+        `;
+            }).join('');
+
+            desenharConexoes();
+        }
+
+        function desenharConexoes() {
+            const svg = document.getElementById('connectionsSvg');
+            svg.innerHTML = '';
+            if (materiaAtual === null) return;
+
+            const nos = materias[materiaAtual].nos || [];
+            const canvasRect = document.getElementById('canvas').getBoundingClientRect();
+
+            nos.forEach(no => {
+                if (no.paiId) {
+                    const filhoEl = document.getElementById('node-' + no.id);
+                    const paiEl = document.getElementById('node-' + no.paiId);
+                    if (!filhoEl || !paiEl) return;
+
+                    const paiRect = paiEl.getBoundingClientRect();
+                    const filhoRect = filhoEl.getBoundingClientRect();
+                    const canvasStyle = window.getComputedStyle(canvas);
+                    const padLeft = parseInt(canvasStyle.paddingLeft);
+                    const padTop = parseInt(canvasStyle.paddingTop);
+
+                    const x1 = paiRect.left - canvasRect.left - padLeft + paiRect.width / 2 + canvas.scrollLeft;
+                    const y1 = paiRect.top - canvasRect.top - padTop + paiRect.height / 2 + canvas.scrollTop;
+                    const x2 = filhoRect.left - canvasRect.left - padLeft + filhoRect.width / 2 + canvas.scrollLeft;
+                    const y2 = filhoRect.top - canvasRect.top - padTop + filhoRect.height / 2 + canvas.scrollTop;
+
+
+                    const linha = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    linha.setAttribute('x1', x1);
+                    linha.setAttribute('y1', y1);
+                    linha.setAttribute('x2', x2);
+                    linha.setAttribute('y2', y2);
+                    linha.setAttribute('stroke', 'var(--accent)');
+                    linha.setAttribute('stroke-width', '2');
+                    linha.setAttribute('opacity', '0.5');
+
+                    svg.appendChild(linha);
+                }
+            });
+        }
+
+
+
+        // Drag manual com mouse
+        document.addEventListener('mousemove', e => {
+            if (!draggingNode) return;
+            const node = document.getElementById(`node-${draggingNode}`);
+            const canvas = document.getElementById('canvas');
+            const rect = canvas.getBoundingClientRect();
+
+            let x = e.clientX - rect.left - offsetX + canvas.scrollLeft;
+            let y = e.clientY - rect.top - offsetY + canvas.scrollTop;
+
+            // Limites
+            x = Math.max(0, Math.min(x, canvas.scrollWidth - node.offsetWidth));
+            y = Math.max(0, Math.min(y, canvas.scrollHeight - node.offsetHeight));
+
+            node.style.left = x + 'px';
+            node.style.top = y + 'px';
+            materias[materiaAtual].nos.find(n => n.id === draggingNode).x = x;
+            materias[materiaAtual].nos.find(n => n.id === draggingNode).y = y;
+
+            desenharConexoes();
+        });
+
+        document.addEventListener('mouseup', e => {
+            draggingNode = null;
+        });
+
+        function iniciarDrag(e, id) {
+            draggingNode = id;
+            const node = document.getElementById(`node-${id}`);
+            const rect = node.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+        }
+
+
+        function limparMapa() {
+            if (materiaAtual === null) return;
+            if (!confirm('Limpar todo o mapa mental desta matéria?')) return;
+
+            materias[materiaAtual].nos = [];
+            salvar();
+            renderCanvas();
+        }
+
+        function exportarImagem() {
+            alert('Para exportar, use Print Screen ou implemente exportação via html2canvas.');
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const tema = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', tema);
+            localStorage.setItem('theme', tema);
+
+            const icon = document.querySelector('.theme-toggle i');
+            icon.className = tema === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+
+        // Eventos de forms
+        document.getElementById('formMateria').addEventListener('submit', (e) => {
+            e.preventDefault();
+            materias.push({ nome: document.getElementById('inputMateriaNome').value.trim(), nos: [] });
+            salvar(); renderMaterias(); fecharModal('modalMateria'); selecionarMateria(materias.length - 1);
+        });
+
+        document.getElementById('formNo').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const id = document.getElementById('inputNoId').value || Date.now().toString();
+            const titulo = document.getElementById('inputNoTitulo').value.trim();
+            const conteudo = document.getElementById('inputNoConteudo').value.trim();
+            const paiId = document.getElementById('inputNoPai').value || null;
+
+            const noExistente = materias[materiaAtual].nos.find(n => n.id === id);
+            if (noExistente) {
+                Object.assign(noExistente, { titulo, conteudo, cor: corSelecionada, paiId });
+            } else {
+                const nosExistentes = materias[materiaAtual].nos.length;
+                materias[materiaAtual].nos.push({ id, titulo, conteudo, cor: corSelecionada, paiId, x: 100 + (nosExistentes % 3) * 300, y: 100 + Math.floor(nosExistentes / 3) * 200 });
+            }
+
+            salvar(); renderCanvas(); fecharModal('modalNo');
+        });
+
+        // Inicializa tema salvo
+        const temaSalvo = localStorage.getItem('theme');
+        if (temaSalvo) { document.documentElement.setAttribute('data-theme', temaSalvo); document.querySelector('.theme-toggle i').className = temaSalvo === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon'; }
+
+        renderMaterias();
+        if (materias.length > 0) selecionarMateria(0);
+
+    </script>
+    <script src="scripiti.js"></script>
+</body>
+
+</html>

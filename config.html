@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sistema de Estudos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="visu.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <span><img src="./imgas/logo.png" style="width: 60px;" alt="📘"></span>
+            <span style="font-family: Tanmeringue, sans-serif; font-size: 30px; color: #6e1fff;">Aurea</span>
+        </div>
+        <div class="navbar-right">
+            <span id="usuario-exibido">Ana</span>
+            <button><a href="config.html" style="color: white;"><i class="fa-solid fa-user icon-btn"
+                        onclick="location.href='config.html'"></i></a></button>
+            <button id="notif-btn"><i class="fa-solid fa-bell icon-btn"></i></button>
+        </div>
+    </nav>
+
+    <!-- notificações pop -->
+    <div id="notif-pop" class="notif-pop" style="display:none;">
+        <h3>Notificações</h3>
+        <ul>
+            <li>Nova mensagem no grupo de Estudos</li>
+            <li>Você foi adicionado a um mapa mental</li>
+        </ul>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <button onclick="showSection('perfil')">👤 Perfil e conta</button>
+        <button onclick="showSection('aparencia')">🎨 Aparência</button>
+        <button onclick="showSection('notificacao')">🔔 Notificação</button>
+        <button onclick="showSection('dispositivos')">💻 Dispositivos</button>
+        <button onclick="showSection('acessibilidade')">♿ Acessibilidade</button>
+        <a href="login.html"><button>🚪 Sair</button></a>
+
+        <div style="position: fixed; bottom: 0; width: 180px;">
+            <center>
+                <button onclick="location.href='home.html'"><i class="fa-solid fa-house icon-btn"
+                        style="font-size:20px;"></i></button>
+                <button class="theme-toggle" onclick="toggleTheme()">Alternar Tema</button>
+            </center>
+        </div>
+    </div>
+
+
+    <div class="main">
+
+        <!-- Perfil -->
+        <div id="perfil" class="section">
+            <h2 class="title">Informações da conta</h2>
+            <fieldset class="card">
+                <div>
+                    <p><b>Nome de usuário:</b> Ana_Baduza</p>
+
+                </div>
+                <div style="padding-top: 15px;">
+                    <p>
+                        <button onclick="editarNome()"
+                            style="background-color: var(--buta); color: var(--text);">alterar</button>
+                        Nome exibido <span id="usuario-exibido"></span>
+                    </p>
+                </div>
+
+                <div style="padding-top: 15px;">
+                    <p><b>Email:</b> exemplo@email.com</p>
+                    <!--Acho q da pra puxar o email q a pessoa colocou no login, mas to com preguiça d correr atras disso agr-->
+                </div>
+                <div style="padding-top: 15px;">
+                    <p><b>Telefone:</b> +55 (11) 912345678</p>
+                </div>
+            </fieldset>
+            <br>
+            <h2 class="title">Segurança e Senhas</h2>
+            <fieldset class="card">
+                <div><button style="background:var(--buta); color: var(--text);"
+                        onclick="location.href='tapa_buraco.html'">Alterar senha</button></div>
+                <div>
+                    <br>
+                    <p><b>Chave de verificação:</b> <i> Nenhuma definida</i></p>
+                </div>
+                <br>
+                <button class="card" style="border-image:none;"
+                        onclick=" location.href='tapa_buraco.html'"><b style=" color: var(--text);">Desativar
+                        conta</b></button>
+                
+                <button class="card" style=" border-image:none;" onclick="location.href='tapa_buraco.html'"><b
+                        style="color: red;">Apagar
+                        conta</b></button>
+
+            </fieldset>
+        </div>
+
+        <!-- Aparência -->
+        <div id="aparencia" class="section" style="display:none;">
+            <h2 class="title">Aparência</h2>
+            <div class="card">
+                <p>Personalize como o sistema aparece para você.</p>
+                <div class="card">
+                    <p>
+                        <b>Tema:</b>
+                        <span id="tema-atual"></span>
+                        <button style="background:var(--buta); color: var(--text);" onclick="toggleTheme()">Alternar
+                            Tema</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notificação -->
+        <div id="notificacao" class="section" style="display:none;">
+            <h2 class="title">Notificações</h2>
+            <div class="card">
+                <label><input type="checkbox"> Ativar notificações por email</label><br>
+                <label><input type="checkbox" checked> Ativar notificações no app</label>
+            </div>
+            <br>
+            <h2 class="title">Notificações Prioritarias</h2>
+            <div class="card">
+                <p>Quando ativas, elas permitem que as notificações dos grupos selecionador continuem chegando
+                 </p><p>(mesmo com as notificações gerais desativadas)</p>
+                <br>
+                <fieldset><label class="switch">
+                        <input type="checkbox">
+                        <span class="slider round"></span>
+                    </label>
+                    <div class="card">Grupos priorizados ></div>
+                </fieldset>
+            </div>
+        </div>
+
+        <!-- Dispositivos -->
+        <div id="dispositivos" class="section" style="display:none;">
+            <h2>Dispositivos conectados</h2>
+            <div class="card">
+                <ul>
+                    <li id="disp_1">Chrome - Windows</li>
+                    <label for="disp_1"><i style="font-size: smaller;">Sincronizado</i></label>
+                    <br><br>
+                    <li id="disp_2">Safari - iPhone</li>
+                    <label for="disp_2"><i style="font-size: smaller;">Ultima sessão hoje às 14:37</i></label>
+                </ul>
+                <button onclick="location.href='tapa_buraco.html'">Gerenciar dispositivos</button>
+                <br><br>
+                <div class="card"><button style="background:none; color: var(--text);"> Conectar dispositivos</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acessibilidade -->
+        <div id="acessibilidade" class="section" style="display:none;">
+            <h2>Acessibilidade</h2>
+            <div class="card">
+                <label><input type="checkbox" id="chk-contraste"> Alto contraste</label><br>
+                <label><input type="checkbox" id="chk-texto"> Texto maior</label><br>
+                <button onclick="location.href='tapa_buraco.html'">Mais opções</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(sec => sec.style.display = 'none');
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        function logout() {
+            if (confirm("Deseja sair da conta?")) {
+                window.location.href = "tapa_buraco.html";
+            }
+        }
+    </script>
+    <script src="scripiti.js"></script>
+</body>
+
+</html>

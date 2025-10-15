@@ -70,8 +70,9 @@
             </fieldset>
 
             <div style="position: fixed; bottom: 0;">
-                <button onclick="location.href='config.html'"><i class="fa-solid fa-gear"></i></button> <button
-                    onclick="location.href='home.html'"><i class="fa-solid fa-house icon-btn"></i></button> <br>
+                <button onclick="location.href='config.html'"><i class="fa-solid fa-gear"
+                        style="font-size: 24px;"></i></button> <button onclick="location.href='home.html'"><i
+                        class="fa-solid fa-house icon-btn" style="font-size: 24px;"></i></button> <br>
             </div>
         </center>
     </div>
@@ -138,15 +139,29 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Fórmula de Cálculo da Média</label>
-                        <div class="formula-help">
-                            <strong>Como usar:</strong> Use os nomes exatos das avaliações (ex: P1, P2, T1, A1) e
-                            operadores
-                            (+, -, *, /, parênteses).
-                            <br><strong>Exemplo:</strong> (P1 + P2) / 2 ou (P1*0.4 + T1*0.3 + A1*0.3)
+                        <label class="form-label">
+                            <input type="checkbox" id="customFormulaToggle">
+                            Usar fórmula personalizada
+                        </label>
+
+                        <!-- Select com fórmulas prontas -->
+                        <select id="formulaSelect" class="form-input">
+                            <option value="">Escolha uma fórmula pronta</option>
+                            <option value="(P1+P2)/2">(P1 + P2) / 2</option>
+                            <option value="P1*0.4+T1*0.3+A1*0.3">(P1*0.4 + T1*0.3 + A1*0.3)</option>
+                            <option value="(P1+P2+T1)/3">(P1 + P2 + T1) / 3</option>
+                        </select>
+
+                        <!-- Área para digitar a própria fórmula -->
+                        <div id="customFormulaContainer" style="display:none; margin-top:10px;">
+                            <div class="formula-help">
+                                <strong>Como usar:</strong> Use os nomes exatos das avaliações (ex: P1, P2, T1, A1) e
+                                operadores
+                                (+, -, *, /, parênteses).<br>
+                                <strong>Exemplo:</strong> (P1 + P2) / 2 ou (P1*0.4 + T1*0.3 + A1*0.3)
+                            </div>
+                            <input type="text" id="inputFormula" class="form-input" placeholder="Digite sua fórmula">
                         </div>
-                        <input type="text" id="inputFormula" class="form-input" placeholder="Ex: (P1 + P2 + T1) / 3"
-                            required>
                     </div>
 
                     <div class="modal-actions">

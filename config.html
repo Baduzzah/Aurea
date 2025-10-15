@@ -42,7 +42,7 @@
         <button onclick="showSection('notificacao')">🔔 Notificação</button>
         <button onclick="showSection('dispositivos')">💻 Dispositivos</button>
         <button onclick="showSection('acessibilidade')">♿ Acessibilidade</button>
-        <a href="login.html"><button>🚪 Sair</button></a>
+        <a href="login.html"><button id="btn-logout" onclick="sairConta()">🚪 Sair</button></a>
 
         <div style="position: fixed; bottom: 0; width: 170px; padding-bottom: 15px;">
             <center>
@@ -63,23 +63,30 @@
             <h2 class="title">Informações da conta</h2>
             <fieldset class="card">
                 <div>
-                    <p><b>Nome de usuário:</b> Ana_Baduza</p>
+                    <p><b>Nome de usuário: </b><span id="nome-exibido"></span> <button onclick="editarNome()"
+                            style="background-color: var(--buta); color: var(--text);">Alterar nome</button></p>
 
                 </div>
                 <div style="padding-top: 15px;">
                     <p>
-                        <button onclick="editarNome()"
-                            style="background-color: var(--buta); color: var(--text);">alterar</button>
-                        Nome exibido <span id="usuario-exibido"></span>
+                        <b>Nome exibido: </b> <span id="usuario-exibido"></span>
+                        <button onclick="editarNick()"
+                            style="background-color: var(--buta); color: var(--text);">alterar
+                        </button>
+
                     </p>
                 </div>
 
                 <div style="padding-top: 15px;">
-                    <p><b>Email:</b> exemplo@email.com</p>
-                    <!--Acho q da pra puxar o email q a pessoa colocou no login, mas to com preguiça d correr atras disso agr-->
+                    <p><b>Email: </b> <span id="email-exibido"></span>
+                        <button style="background-color: var(--buta); color: var(--text);"
+                            onclick="editarEmail()">alterar</button>
+
+                    </p>
+
                 </div>
                 <div style="padding-top: 15px;">
-                    <p><b>Telefone:</b> +55 (11) 912345678</p>
+                    <p><b>Telefone:</b> Não cadastrado</p>
                 </div>
             </fieldset>
             <br>
@@ -189,4 +196,3 @@
 </body>
 
 </html>
-

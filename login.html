@@ -82,7 +82,7 @@
         <div class="login-left">
             <img src="./imgas/logo.png" alt="📘">
             <h2 style="font-family: Tanmeringue, sans-serif;">Login</h2>
-            
+
         </div>
         <div style="width: 125px;"></div>
         <div class="login-right">
@@ -105,14 +105,21 @@
                 return;
             }
 
-            // salva estado de login
+            // simula login
             localStorage.setItem("logado", "1");
-            localStorage.setItem("usuario", email);
 
-            // vai pra home
+            // se não existir nome ou apelido, define padrão
+            if (!localStorage.getItem("usuario")) localStorage.setItem("usuario", "Usuário");
+            if (!localStorage.getItem("usuarioExibido")) localStorage.setItem("usuarioExibido", localStorage.getItem("usuario"));
+
+            // atualiza email ativo
+            localStorage.setItem("emailexibido", email);
+
             window.location.href = "home.html";
         });
     </script>
+
+
 </body>
 
 </html>

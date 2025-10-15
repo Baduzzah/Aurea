@@ -145,6 +145,18 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('trabalhosContainer').innerHTML = '';
     document.getElementById('atividadesContainer').innerHTML = '';
     contadores = { provas: 0, trabalhos: 0, atividades: 0 };
+
+    // Resetar toggle de fórmula
+    const toggle = document.getElementById('customFormulaToggle');
+    const customContainer = document.getElementById('customFormulaContainer');
+    const formulaSelect = document.getElementById('formulaSelect');
+    const inputFormula = document.getElementById('inputFormula');
+
+    toggle.checked = false;
+    customContainer.style.display = 'none';
+    formulaSelect.style.display = 'block';
+    inputFormula.required = false;
+    formulaSelect.required = true;
   }
 
   function editarMateria(index) {
@@ -152,8 +164,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const m = materias[index];
     document.getElementById('modalTitle').textContent = 'Editar Matéria';
     document.getElementById('inputNome').value = m.nome;
-    document.getElementById('inputFormula').value = m.formula;
-    limparFormulario();
+    // ====== Fórmula: decide se é custom ou select ======
+    const toggle = document.getElementById('customFormulaToggle');
+    const customContainer = document.getElementById('customFormulaContainer');
+    const formulaSelect = document.getElementById('formulaSelect');
+    const inputFormula = document.getElementById('inputFormula');
+
+    const formulasProntas = Array.from(formulaSelect.options).map(opt => opt.value);
+    if (formulasProntas.includes(m.formula)) {
+      toggle.checked = false;
+      customContainer.style.display = 'none';
+      formulaSelect.style.display = 'block';
+      formulaSelect.value = m.formula;
+      inputFormula.required = false;
+      formulaSelect.required = true;
+    } else {
+      toggle.checked = true;
+      customContainer.style.display = 'block';
+      formulaSelect.style.display = 'none';
+      inputFormula.value = m.formula;
+      inputFormula.required = true;
+      formulaSelect.required = false;
+    }
+
+    // ====== Avaliações ======
+    limparFormulario(); // limpa containers
 
     Object.entries(m.avaliacoes.provas).forEach(([nome, nota]) => {
       adicionarItem('provas');
@@ -204,13 +239,11 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Lembretes
-    const lembretes = JSON.parse(localStorage.getItem('lembretes')) || [];
-    lembretes.forEach(l => eventos.push({ data: l.data, texto: l.texto, tipo: 'Lembrete' }));
+    
 
     // Ordena e pega os 3 mais próximos
     eventos.sort((a, b) => new Date(a.data) - new Date(b.data));
-    const proximos = eventos.slice(0, 3);
+    const proximos = eventos.slice(0, 5);
 
     resumoEl.innerHTML = proximos.length
       ? proximos.map(ev => `<li>
@@ -232,14 +265,38 @@ document.addEventListener("DOMContentLoaded", () => {
     icon.className = novoTema === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
   }
 
+  // ====== Toggle fórmula personalizada ======
+  const toggle = document.getElementById('customFormulaToggle');
+  const customContainer = document.getElementById('customFormulaContainer');
+  const formulaSelect = document.getElementById('formulaSelect');
+  const inputFormula = document.getElementById('inputFormula');
+
+  inputFormula.required = false;
+  formulaSelect.required = true;
+
+  toggle.addEventListener('change', () => {
+    if (toggle.checked) {
+      customContainer.style.display = 'block';
+      formulaSelect.style.display = 'none';
+      inputFormula.required = true;
+      formulaSelect.required = false;
+    } else {
+      customContainer.style.display = 'none';
+      formulaSelect.style.display = 'block';
+      inputFormula.required = false;
+      formulaSelect.required = true;
+    }
+  });
 
   // ====== Eventos ======
   document.getElementById('materiaForm').addEventListener('submit', (e) => {
     e.preventDefault();
+     const formulaValue = toggle.checked ? inputFormula.value.trim() : formulaSelect.value.trim();
+
     const materia = {
       nome: document.getElementById('inputNome').value.trim(),
       avaliacoes: coletarAvaliacoes(),
-      formula: document.getElementById('inputFormula').value.trim()
+      formula: formulaValue
     };
     if (editandoIndex >= 0) materias[editandoIndex] = materia;
     else materias.push(materia);
@@ -252,7 +309,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.target.id === 'modal') fecharModal();
   });
 
-  document.querySelector('.theme-toggle').addEventListener('click', toggleTheme);
+  
 
   const temaSalvo = localStorage.getItem('theme');
   if (temaSalvo) {
@@ -271,7 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.adicionarItem = adicionarItem;
 
   window.editarMateria = editarMateria;
-  window.removerItem = removerItem; // se quiser que o botão de trash funcione
+  window.removerItem = removerItem; 
   window.excluirMateria = excluirMateria;
 
 });

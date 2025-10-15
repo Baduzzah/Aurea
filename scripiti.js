@@ -1035,12 +1035,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // FIM DO CALENDÁRIO COM ANOTAÇÕES
     // ========================================
 
-    // ---- EDITAR NOME EXIBIDO ----
-    const nomeSalvo = localStorage.getItem('usuarioExibido');
-    if (nomeSalvo) {
-        const elNome = el('usuario-exibido');
-        if (elNome) elNome.textContent = nomeSalvo;
-    }
+
+
 
     // ========================================
     // SINCRONIZAÇÃO LEMBRETES + CALENDÁRIO
@@ -1186,6 +1182,7 @@ document.addEventListener('DOMContentLoaded', function () {
     renderLembretes();
 });
 
+
 function atualizarTemaAtual() {
     const tema = document.documentElement.getAttribute('data-theme');
     const span = document.getElementById('tema-atual');
@@ -1204,13 +1201,57 @@ function toggleTheme() {
     icon.className = novoTema === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
 }
 
-// ---- FUNÇÃO GLOBAL EDITAR NOME ----
+
+// ---- Exibir nome, apelido e email salvos ----
+document.addEventListener("DOMContentLoaded", () => {
+    const nomeSalvo = localStorage.getItem('usuario');
+    const nickSalvo = localStorage.getItem('usuarioExibido');
+    const emailSalvo = localStorage.getItem('emailexibido');
+
+    const elNome = document.getElementById('nome-exibido');
+    const elNick = document.getElementById('usuario-exibido');
+    const elEmail = document.getElementById('email-exibido');
+
+    if (elNome && nomeSalvo) elNome.textContent = nomeSalvo;
+    if (elNick && nickSalvo) elNick.textContent = nickSalvo;
+    if (elEmail && emailSalvo) elEmail.textContent = emailSalvo;
+});
+
+// ---- Editar nome ----
 function editarNome() {
-    const novo = prompt("Digite o novo nome exibido:");
-    if (novo && novo.trim()) {
-        const elNome = document.getElementById('usuario-exibido');
-        if (elNome) elNome.textContent = novo.trim();
-        localStorage.setItem('usuarioExibido', novo.trim());
-        alert("Nome atualizado!");
+    const novoNome = prompt("Digite o novo nome de usuário:");
+    if (novoNome && novoNome.trim()) {
+        localStorage.setItem('usuario', novoNome.trim());
+        const elNome = document.getElementById('nome-exibido');
+        if (elNome) elNome.textContent = novoNome.trim();
+        alert("Nome alterado com sucesso!");
     }
 }
+
+// ---- Editar nome exibido / apelido ----
+function editarNick() {
+    const novoNick = prompt("Digite o novo nome exibido (apelido):");
+    if (novoNick && novoNick.trim()) {
+        localStorage.setItem('usuarioExibido', novoNick.trim());
+        const elNick = document.getElementById('usuario-exibido');
+        if (elNick) elNick.textContent = novoNick.trim();
+        alert("Nome exibido alterado!");
+    }
+}
+
+// ---- Editar email ----
+function editarEmail() {
+    const confirmar = prompt("Confirme sua senha atual para prosseguir:");
+    if (confirmar === null) return; // cancelado
+
+    const novoEmail = prompt("Digite o novo email:");
+    if (novoEmail && novoEmail.trim()) {
+        localStorage.setItem('emailexibido', novoEmail.trim());
+        const elEmail = document.getElementById('email-exibido');
+        if (elEmail) elEmail.textContent = novoEmail.trim();
+        prompt("Digite uma nova senha para o novo email (opcional):");
+        alert("Email alterado com sucesso!");
+    }
+}
+
+

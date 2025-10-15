@@ -10,15 +10,22 @@
     <style>
         :root {
             --verde: #10b981;
-            --bg-verde: #ecfdf5;
+            --bg-verde: #c2f1db;
 
-            --laranja: #f59e0b;
-            --bg-laranja: #fffbeb;
+            --bg-rosa:#f9afe1;
+            --bg-azul:#b4d1f1;
+            --bg-roxo: #ddcbf4;
+
+            --laranja: #fb9c2f;
+            --bg-laranja: #f9c9a1;
         }
 
         [data-theme="dark"] {
             --bg-verde: #1a4d34;
             --bg-laranja: #824224;
+            --bg-roxo:#382474;
+            --bg-rosa:#9a3261;
+            --bg-azul:#4a7cb1;
         }
 
         .btn-new-materia {
@@ -147,7 +154,7 @@
         }
 
         .canvas {
-            margin-left: 240px;
+            
             padding: 40px;
             flex-grow: 1;
             height: 100%;
@@ -320,11 +327,13 @@
             background: var(--bg2);
             color: var(--text);
             font-size: 14px;
+            
         }
 
         .form-textarea {
             resize: vertical;
             min-height: 80px;
+            
         }
 
         .color-options {
@@ -444,8 +453,8 @@
         <div id="materiasList"></div>
 
         <div style="position: fixed; bottom: 0;">
-            <button onclick="location.href='config.html'"><i class="fa-solid fa-gear"></i></button> <button
-                onclick="location.href='home.html'"><i class="fa-solid fa-house icon-btn"></i></button> <br>
+            <button onclick="location.href='config.html'"><i class="fa-solid fa-gear" style="font-size: 24px;"></i></button> <button
+                onclick="location.href='home.html'"><i class="fa-solid fa-house icon-btn" style="font-size: 24px;"></i></button> <br>
         </div>
     </div>
 
@@ -498,7 +507,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label">Conteúdo/Descrição</label>
-                        <textarea id="inputNoConteudo" class="form-textarea"></textarea>
+                        <textarea id="inputNoConteudo" class="form-textarea" maxlength="120"></textarea>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Tipo/Cor</label>

@@ -1194,10 +1194,14 @@ function atualizarTemaAtual() {
 
 function toggleTheme() {
     const html = document.documentElement;
-    const novo = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    html.setAttribute('data-theme', novo);
-    localStorage.setItem('theme', novo);
-    atualizarTemaAtual();
+    const temaAtual = html.getAttribute('data-theme');
+    const novoTema = temaAtual === 'dark' ? 'light' : 'dark';
+
+    html.setAttribute('data-theme', novoTema);
+    localStorage.setItem('theme', novoTema);
+
+    const icon = document.querySelector('.theme-toggle i');
+    icon.className = novoTema === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
 }
 
 // ---- FUNÇÃO GLOBAL EDITAR NOME ----

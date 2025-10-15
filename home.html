@@ -20,7 +20,8 @@
         </div>
         <div class="navbar-right">
             <span id="usuario-exibido">Ana</span>
-            <button><a href="config.html" style="color: white;"><i class="fa-solid fa-user icon-btn" onclick="location.href='config.html'"></i></a></button>
+            <button><a href="config.html" style="color: white;"><i class="fa-solid fa-user icon-btn"
+                        onclick="location.href='config.html'"></i></a></button>
             <button id="notif-btn"><i class="fa-solid fa-bell icon-btn"></i></button>
         </div>
     </nav>
@@ -38,7 +39,8 @@
     <div class="sidebar">
         <center>
             <fieldset>
-                <button onclick="displaygrupo()" style="width:188px;position:relative; top: -15px;">Grupos de Estudos</button>
+                <button onclick="displaygrupo()" style="width:188px;position:relative; top: -15px;">Grupos de
+                    Estudos</button>
                 <div id="grup" style="display: none;">
                     <div>
                         <ul id="task-table"></ul>
@@ -52,7 +54,8 @@
             </fieldset>
             <br><br>
             <fieldset>
-                <button style="width:188px;position:relative; top: -15px;" onclick="displaymapas()">Mapas Mentais</button>
+                <button style="width:188px;position:relative; top: -15px;" onclick="displaymapas()">Mapas
+                    Mentais</button>
                 <div id="mapas" style="display: none;">
                     <div>
                         <ul id="mapa-table"></ul>
@@ -68,7 +71,11 @@
             <div style="position: fixed; bottom: 0;">
                 <button onclick="location.href='config.html'"><i class="fa-solid fa-gear icon-btn"
                         style="font-size: 24px;"></i></button>
-                <button class="theme-toggle" onclick="toggleTheme()">Alternar Tema</button>
+
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+
             </div>
         </center>
     </div>
@@ -83,7 +90,7 @@
             <div class='card' onclick="location.href='notas.html'">Notas</div>
             <div class='card' onclick="location.href='materias.html'">Matérias</div>
             <div class='card' onclick="location.href='mapamental.html'">Mapa Mental</div>
-            <div class="card" onclick="location.href='grupodeestudos.html'" >Grupo de Estudos</div>
+            <div class="card" onclick="location.href='grupodeestudos.html'">Grupo de Estudos</div>
             <div class='card' onclick="location.href='faltas.html'">Faltas</div>
         </div>
         <br>
@@ -105,12 +112,14 @@
             <div class="dashboard-card" id="lembretes-card">
                 <div class="card-header">
                     <div class="card-title">Lembretes da Semana</div>
-                    
+
                 </div>
 
                 <div style="margin-bottom: 10px;">
-                    <input type="text" id="novo-lembrete-texto" placeholder="Digite um lembrete..." style="width: 60%; padding: 5px;">
-                    <input type="date" id="novo-lembrete-data" placeholder="Escolha a data" style="width: 30%; padding: 5px;">
+                    <input type="text" id="novo-lembrete-texto" placeholder="Digite um lembrete..."
+                        style="width: 60%; padding: 5px;">
+                    <input type="date" id="novo-lembrete-data" placeholder="Escolha a data"
+                        style="width: 30%; padding: 5px;">
                     <select id="novo-lembrete-cor">
                         <option value="pink">rosa</option>
                         <option value="purple">roxo</option>
@@ -121,10 +130,14 @@
                 <ul class="reminders-list" id="reminders-list"></ul>
             </div>
         </div>
+
+
+
     </div>
 
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="scripiti.js"></script>
 </body>
+
 </html>

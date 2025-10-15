@@ -78,8 +78,9 @@
     <label>Senha</label>
     <input type="password" id="senha" placeholder="********">
     <button id="criar-btn">Criar Conta</button>
-    <a href="login.html">Já tem conta? Fazer login</a>
+    <p>Já tem conta? <a href="login.html"> Fazer login</a></p>
   </div>
+
 
   <script>
     document.getElementById("criar-btn").addEventListener("click", () => {
@@ -92,14 +93,18 @@
         return;
       }
 
-      // salva usuário fake no localStorage
+      // salva informações no localStorage
       localStorage.setItem("logado", "1");
-      localStorage.setItem("usuario", email);
+      localStorage.setItem("usuario", nome);          // nome real
+      localStorage.setItem("usuarioExibido", nome);   // apelido inicial igual ao nome
+      localStorage.setItem("emailexibido", email);    // email
 
       alert("Conta criada com sucesso!");
       window.location.href = "home.html";
     });
   </script>
+
+
 </body>
 
 </html>

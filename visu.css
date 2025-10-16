@@ -56,6 +56,11 @@ body {
     /* empurra conteúdo por causa do navbar fixo */
 }
 
+::placeholder {
+    color: var(--text);
+    opacity: 0.6;
+}
+
 @font-face {
     font-family: 'Tanmeringue';
     src: url('fonte/TAN\ MERINGUE.ttf') format('truetype');

@@ -12,8 +12,8 @@
             --verde: #10b981;
             --bg-verde: #c2f1db;
 
-            --bg-rosa:#f9afe1;
-            --bg-azul:#b4d1f1;
+            --bg-rosa: #f9afe1;
+            --bg-azul: #b4d1f1;
             --bg-roxo: #ddcbf4;
 
             --laranja: #fb9c2f;
@@ -23,9 +23,9 @@
         [data-theme="dark"] {
             --bg-verde: #1a4d34;
             --bg-laranja: #824224;
-            --bg-roxo:#382474;
-            --bg-rosa:#9a3261;
-            --bg-azul:#4a7cb1;
+            --bg-roxo: #382474;
+            --bg-rosa: #9a3261;
+            --bg-azul: #4a7cb1;
         }
 
         .btn-new-materia {
@@ -154,7 +154,7 @@
         }
 
         .canvas {
-            
+
             padding: 40px;
             flex-grow: 1;
             height: 100%;
@@ -215,6 +215,13 @@
 
         .btn-node:hover {
             opacity: 1;
+        }
+
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--accent);
         }
 
         .node-content {
@@ -327,13 +334,13 @@
             background: var(--bg2);
             color: var(--text);
             font-size: 14px;
-            
+
         }
 
         .form-textarea {
             resize: vertical;
             min-height: 80px;
-            
+
         }
 
         .color-options {
@@ -452,9 +459,10 @@
         </button>
         <div id="materiasList"></div>
 
-        <div style="position: fixed; bottom: 0;">
-            <button onclick="location.href='config.html'"><i class="fa-solid fa-gear" style="font-size: 24px;"></i></button> <button
-                onclick="location.href='home.html'"><i class="fa-solid fa-house icon-btn" style="font-size: 24px;"></i></button> <br>
+        <div style="position: fixed; bottom: 0; width: 170px; padding-bottom: 15px;">
+            <button onclick="location.href='config.html'"><i class="fa-solid fa-gear"
+                    style="font-size: 24px;"></i></button> <button onclick="location.href='home.html'"><i
+                    class="fa-solid fa-house icon-btn" style="font-size: 24px;"></i></button> <br>
         </div>
     </div>
 

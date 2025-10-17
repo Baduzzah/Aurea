@@ -1,3 +1,5 @@
+/* Tema claro e escuro */
+
 :root {
     --bg: #ddcbf4;
     --text: #1e1e2f;
@@ -40,6 +42,8 @@
     background: var(--rosa);
 }
 
+/* Estilos globais */
+
 * {
     margin: 0;
     padding: 0;
@@ -60,7 +64,7 @@ body {
     color: var(--text);
     opacity: 0.6;
 }
-
+/* Fonte personalizada */
 @font-face {
     font-family: 'Tanmeringue';
     src: url('fonte/TAN\ MERINGUE.ttf') format('truetype');
@@ -68,6 +72,7 @@ body {
     font-style: normal;
 }
 
+/* Botão de alternar tema */
 .theme-toggle {
     position: fixed;
     bottom: 20px;
@@ -440,4 +445,24 @@ body.alto-contraste .notif-pop {
 body.texto-maior {
     font-size: 1.2em;
     line-height: 1.6;
+}
+
+/* Estilos para itens de mapa mental (e grupos por enquanto) na sidebar */
+.mapa-item {
+    background-color: var(--card, #eaeaea);
+    color: var(--text, #1e1e2f);
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin: 8px 0;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mapa-item:hover {
+    background-color: var(--accent, #6e1fff);
+    color: #fff;
+    transform: scale(1.03);
 }

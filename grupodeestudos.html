@@ -225,9 +225,6 @@
 
 
 <body>
-
-
-
     <!-- NAVBAR -->
     <nav class="navbar">
         <div class="navbar-left">
@@ -269,7 +266,7 @@
                 </div>
             </fieldset>
             <br><br>
-            <fieldset> 
+            <fieldset>
                 <button style="width:188px;position:relative; top: -15px;" onclick="displaymapas()">Mapas
                     Mentais</button>
                 <div id="mapas" style="display: none;">
@@ -284,9 +281,10 @@
                 </div>
             </fieldset>
 
-            <div style="position: fixed; bottom: 0;">
-                <button onclick="location.href='config.html'"><i class="fa-solid fa-gear" style="font-size: 24px;"></i></button> <button
-                    onclick="location.href='home.html'"><i class="fa-solid fa-house icon-btn" style="font-size: 24px;"></i></button> <br> 
+            <div style="position: fixed; bottom: 0; width: 170px; padding-bottom: 15px;">
+                <button onclick="location.href='config.html'"><i class="fa-solid fa-gear"
+                        style="font-size: 24px;"></i></button> <button onclick="location.href='home.html'"><i
+                        class="fa-solid fa-house icon-btn" style="font-size: 24px;"></i></button> <br>
             </div>
         </center>
     </div>
@@ -388,6 +386,14 @@
             </div>
         </div>
     </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+
+    <!-- Scripts -->
+
+    <script src="scripiti.js"></script>
 
     <script>
         const themeToggle = document.getElementById('themeToggle');

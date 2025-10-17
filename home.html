@@ -39,43 +39,29 @@
     <div class="sidebar">
         <center>
             <fieldset>
-                <button onclick="displaygrupo()" style="width:188px;position:relative; top: -15px;">Grupos de
-                    Estudos</button>
-                <div id="grup" style="display: none;">
-                    <div>
-                        <ul id="task-table"></ul>
-                    </div>
-                    <button id="add" style="border-radius: 100px;"><b>+</b></button>
-                    <div id="pop" style="display: none;">
-                        <input type="text" id="novo_grupo" placeholder="Nome do Grupo">
-                        <button id="add_novo">criar</button>
-                    </div>
+                <button onclick="toggleSection('grup')" style="width:188px;position:relative; top:-15px;">
+                    Grupos de Estudos
+                </button>
+                <div id="grup" style="display:none;">
+                    <ul id="task-table"></ul>
                 </div>
             </fieldset>
+
             <br><br>
+
             <fieldset>
-                <button style="width:188px;position:relative; top: -15px;" onclick="displaymapas()">Mapas
-                    Mentais</button>
-                <div id="mapas" style="display: none;">
-                    <div>
-                        <ul id="mapa-table"></ul>
-                    </div>
-                    <button id="add-mapas" style="border-radius: 100px;">+</button>
-                    <div id="pop-mapas" style="display: none;">
-                        <input type="text" id="novo_mapa" placeholder="Nome do Mapa Mental">
-                        <button id="add_novo_mapa">criar</button>
-                    </div>
+                <button onclick="toggleSection('mapas')" style="width:188px;position:relative; top:-15px;">
+                    Mapas Mentais
+                </button>
+                <div id="mapas" style="display:none;">
+                    <ul id="mapa-table"></ul>
                 </div>
             </fieldset>
 
             <div style="position: fixed; bottom: 0; width: 170px; padding-bottom: 15px;">
-                <button onclick="location.href='config.html'"><i class="fa-solid fa-gear icon-btn"
-                        style="font-size: 24px;"></i></button>
-
-                <button class="theme-toggle" onclick="toggleTheme()">
-                    <i class="fa-solid fa-moon"></i>
-                </button>
-
+                <button onclick="location.href='config.html'"><i class="fa-solid fa-gear"
+                        style="font-size: 24px;"></i></button> <button onclick="location.href='home.html'"><i
+                        class="fa-solid fa-house icon-btn" style="font-size: 24px;"></i></button> <br>
             </div>
         </center>
     </div>
@@ -130,10 +116,11 @@
                 <ul class="reminders-list" id="reminders-list"></ul>
             </div>
         </div>
-
-
-
     </div>
+
+    <button class="theme-toggle" onclick="toggleTheme()">
+        <i class="fa-solid fa-moon"></i>
+    </button>
 
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

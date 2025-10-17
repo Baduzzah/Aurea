@@ -1,154 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const el = id => document.getElementById(id);
 
-    // ---- GRUPOS ----
-    const grupEl = el('grup');
-    const addBtn = el('add');
-    const popGroup = el('pop');
-    const novoGrupo = el('novo_grupo');
-    const addNovoBtn = el('add_novo');
-    const taskTable = el('task-table');
-
-    let grupos = JSON.parse(localStorage.getItem("grupos")) || [];
-
-    function criarBotao(texto, cor, onClick) {
-        const btn = document.createElement('button');
-        btn.textContent = texto;
-        btn.style.marginLeft = "6px";
-        btn.style.padding = "2px 6px";
-        btn.style.borderRadius = "6px";
-        btn.style.border = "none";
-        btn.style.backgroundColor = cor;
-        btn.style.color = "#fff";
-        btn.style.cursor = "pointer";
-        btn.onclick = onClick;
-        return btn;
-    }
-
-    function renderGrupos() {
-        if (!taskTable) return;
-        taskTable.innerHTML = "";
-        grupos.forEach((nome, i) => {
-            const li = document.createElement("li");
-            li.style.marginBottom = "8px";
-            li.textContent = nome;
-
-            const editBtn = criarBotao("✎", "#6e1fff", () => {
-                const novoNome = prompt("Digite o novo nome do grupo:", nome);
-                if (novoNome) {
-                    grupos[i] = novoNome.trim();
-                    localStorage.setItem("grupos", JSON.stringify(grupos));
-                    renderGrupos();
-                }
-            });
-
-            const delBtn = criarBotao("x", "#ff5252", () => {
-                grupos.splice(i, 1);
-                localStorage.setItem("grupos", JSON.stringify(grupos));
-                renderGrupos();
-            });
-
-            li.appendChild(editBtn);
-            li.appendChild(delBtn);
-            taskTable.appendChild(li);
-        });
-    }
-
-    if (grupEl && addBtn && popGroup && novoGrupo && addNovoBtn && taskTable) {
-        window.displaygrupo = () => {
-            grupEl.style.display = (getComputedStyle(grupEl).display === 'none') ? 'block' : 'none';
-        };
-
-        addBtn.addEventListener('click', () => {
-            const hidden = getComputedStyle(popGroup).display === 'none';
-            popGroup.style.display = hidden ? 'block' : 'none';
-            addBtn.textContent = hidden ? 'fechar' : '+';
-            addBtn.style.backgroundColor = hidden ? '#7e57c2' : '';
-            if (hidden) novoGrupo.focus();
-        });
-
-        addNovoBtn.addEventListener('click', e => {
-            e.preventDefault();
-            const v = novoGrupo.value.trim();
-            if (!v) { alert('Digite um nome para o grupo!'); novoGrupo.focus(); return; }
-            grupos.push(v);
-            localStorage.setItem("grupos", JSON.stringify(grupos));
-            renderGrupos();
-            novoGrupo.value = '';
-            popGroup.style.display = 'none';
-            addBtn.textContent = '+';
-            addBtn.style.backgroundColor = '';
-        });
-
-        renderGrupos();
-    }
-
-    // ---- MAPAS ----
-    const mapasEl = el('mapas');
-    const addMapBtn = el('add-mapas');
-    const popMapas = el('pop-mapas');
-    const novoMapa = el('novo_mapa');
-    const addNovoMapa = el('add_novo_mapa');
-    const mapaTable = el('mapa-table');
-
-    let mapas = JSON.parse(localStorage.getItem("mapas")) || [];
-
-    function renderMapas() {
-        if (!mapaTable) return;
-        mapaTable.innerHTML = "";
-        mapas.forEach((nome, i) => {
-            const li = document.createElement("li");
-            li.style.marginBottom = "8px";
-            li.textContent = nome;
-
-            const editBtn = criarBotao("✎", "#6e1fff", () => {
-                const novoNome = prompt("Digite o novo nome do mapa mental:", nome);
-                if (novoNome) {
-                    mapas[i] = novoNome.trim();
-                    localStorage.setItem("mapas", JSON.stringify(mapas));
-                    renderMapas();
-                }
-            });
-
-            const delBtn = criarBotao("x", "#ff5252", () => {
-                mapas.splice(i, 1);
-                localStorage.setItem("mapas", JSON.stringify(mapas));
-                renderMapas();
-            });
-
-            li.appendChild(editBtn);
-            li.appendChild(delBtn);
-            mapaTable.appendChild(li);
-        });
-    }
-
-    if (mapasEl && addMapBtn && popMapas && novoMapa && addNovoMapa && mapaTable) {
-        window.displaymapas = () => mapasEl.style.display = (getComputedStyle(mapasEl).display === 'none') ? 'block' : 'none';
-
-        addMapBtn.addEventListener('click', () => {
-            const hidden = getComputedStyle(popMapas).display === 'none';
-            popMapas.style.display = hidden ? 'block' : 'none';
-            addMapBtn.textContent = hidden ? 'fechar' : '+';
-            addMapBtn.style.backgroundColor = hidden ? '#7e57c2' : '';
-            if (hidden) novoMapa.focus();
-        });
-
-        addNovoMapa.addEventListener('click', e => {
-            e.preventDefault();
-            const v = novoMapa.value.trim();
-            if (!v) { alert('Digite um nome para o mapa mental!'); novoMapa.focus(); return; }
-            mapas.push(v);
-            localStorage.setItem("mapas", JSON.stringify(mapas));
-            renderMapas();
-            novoMapa.value = '';
-            popMapas.style.display = 'none';
-            addMapBtn.textContent = '+';
-            addMapBtn.style.backgroundColor = '';
-        });
-
-        renderMapas();
-    }
-
     // ---- NOTIFICAÇÕES ----
     const notifBtn = el('notif-btn');
     const notifPop = el('notif-pop');
@@ -1182,7 +1034,11 @@ document.addEventListener('DOMContentLoaded', function () {
     renderLembretes();
 });
 
+// ========================================
+// FIM DA SINCRONIZAÇÃO LEMBRETES + CALENDÁRIO
+// ========================================
 
+// ---- Alternar tema claro/escuro ----
 function atualizarTemaAtual() {
     const tema = document.documentElement.getAttribute('data-theme');
     const span = document.getElementById('tema-atual');
@@ -1253,5 +1109,81 @@ function editarEmail() {
         alert("Email alterado com sucesso!");
     }
 }
+
+// ---- Alternar seções (mapas mentais, grupos de estudos) ----
+// aka sidebar
+
+document.addEventListener('DOMContentLoaded', function () {
+    const el = id => document.getElementById(id);
+
+    // Função genérica para mostrar/esconder seções
+    window.toggleSection = id => {
+        const section = el(id);
+        if (!section) return;
+        const visible = getComputedStyle(section).display !== 'none';
+        section.style.display = visible ? 'none' : 'block';
+    };
+
+    // =====================
+    // MAPAS MENTAIS
+    // =====================
+    const mapaTable = el('mapa-table');
+    let mapasMentais = JSON.parse(localStorage.getItem('mapasMentais')) || [];
+
+    function renderMapasMentais() {
+        if (!mapaTable) return;
+        mapaTable.innerHTML = "";
+
+        if (mapasMentais.length === 0) {
+            mapaTable.innerHTML = "Nenhum mapa mental criado ainda.";
+            return;
+        }
+
+        mapasMentais.forEach((m, i) => {
+            const item = document.createElement("div");
+            item.textContent = m.nome || `Mapa ${i + 1}`;
+            item.className = "mapa-item"; // vamos definir o estilo via CSS
+            item.addEventListener("click", () => {
+                window.location.href = `mapamental.html?materia=${encodeURIComponent(m.nome)}`;
+            });
+            mapaTable.appendChild(item);
+        });
+    }
+
+    renderMapasMentais();
+
+    // =====================
+    // GRUPOS DE ESTUDOS
+    // =====================
+    const taskTable = el('task-table');
+    let grupos = JSON.parse(localStorage.getItem('grupos')) || [];
+
+    function renderGrupos() {
+        if (!taskTable) return;
+        taskTable.innerHTML = "";
+
+        if (grupos.length === 0) {
+            taskTable.innerHTML = "<li style='opacity:0.7;'>Nenhum grupo criado ainda.</li>";
+            return;
+        }
+
+        grupos.forEach((nome, i) => {
+            const item = document.createElement("div");
+            item.textContent = nome || `Grupo ${i + 1}`;
+            item.className = "mapa-item"; // usa o mesmo estilo pra unificar o visual
+
+            item.addEventListener("click", () => {
+                // Por enquanto não redireciona — mas já preparado
+                // Quando a página de grupos existir, troque a linha abaixo:
+                // window.location.href = `grupos.html?grupo=${encodeURIComponent(nome)}`;
+                alert(`Abrir grupo: ${nome}`);
+            });
+
+            taskTable.appendChild(item);
+        });
+    }
+
+    renderGrupos();
+});
 
 
